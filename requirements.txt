@@ -1,0 +1,5 @@
+# Python dependencies
+pandas
+numpy
+jupyter
+rank-bm25

@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data
+data/
+*.parquet
+*.csv
+*.json
+*.npy
+
+# Exclude specific metadata files unless explicitly needed
+!data/processed/intent_taxonomy.json
+
+# Logs
+*.log
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.idea/
+.vscode/
+
+# Ignore the monolithic code dump if preferred
+all_code.md
