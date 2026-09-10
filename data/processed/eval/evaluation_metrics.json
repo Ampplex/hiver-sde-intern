@@ -6021,11 +6021,11 @@
     "baseline_training_examples": 8000
   },
   "system_action": {
-    "auto_handle_coverage": 0.095,
-    "unsafe_auto_handle_rate": 0.07,
-    "unsafe_auto_handle_rate_given_auto": 0.7368421052631579,
-    "escalation_recall": 0.9041095890410958,
-    "auto_handle_precision": 0.2631578947368421
+    "auto_handle_coverage": 0.02,
+    "unsafe_auto_handle_rate": 0.0,
+    "unsafe_auto_handle_rate_given_auto": 0.0,
+    "escalation_recall": 1.0,
+    "auto_handle_precision": 1.0
   },
   "always_escalate_baseline": {
     "auto_handle_coverage": 0.0,
