@@ -1,0 +1,15 @@
+{
+  "brand": "AmazonHelp",
+  "seed": 42,
+  "golden_size": 200,
+  "training_size": 8000,
+  "discovery_sample_size": 1500,
+  "discovery_similarity_threshold": 0.50,
+  "min_cluster_size": 2,
+  "assignment_threshold": 0.45,
+  "embedding_model": "amazon.titan-embed-text-v2:0",
+  "llm_model": "mistral.mistral-large-2407-v1:0",
+  "final_intent_count": 104,
+  "taxonomy_hash": "5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5",
+  "reproduction_mode": "frozen_artifacts"
+}

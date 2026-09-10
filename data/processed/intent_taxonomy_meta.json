@@ -1,0 +1,1192 @@
+{
+  "taxonomy_hash": "5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5",
+  "training_cases": 8000,
+  "assigned_cases": 8000,
+  "uncovered_cases": 0,
+  "coverage": 1.0,
+  "discovery_sample_size": 1500,
+  "discovery_similarity_threshold": 0.5,
+  "assignment_threshold": 0.45,
+  "candidate_min_cluster_size": 2,
+  "semantic_dedup_audit": [
+    {
+      "cluster_id": 28,
+      "cluster_size": 478,
+      "candidate_name": "delivery_status",
+      "action": "create",
+      "target_intent": "delivery_status",
+      "prototype_similarity": null,
+      "reason": "First intent."
+    },
+    {
+      "cluster_id": 65,
+      "cluster_size": 62,
+      "candidate_name": "poor_service",
+      "action": "create",
+      "target_intent": "poor_service",
+      "prototype_similarity": 0.7084035277366638,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 17,
+      "cluster_size": 59,
+      "candidate_name": "refund_issue",
+      "action": "create",
+      "target_intent": "refund_issue",
+      "prototype_similarity": 0.7136939764022827,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 35,
+      "cluster_size": 45,
+      "candidate_name": "damaged_item",
+      "action": "create",
+      "target_intent": "damaged_item",
+      "prototype_similarity": 0.7766122817993164,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 3,
+      "cluster_size": 43,
+      "candidate_name": "missing_incorrect_item",
+      "action": "create",
+      "target_intent": "missing_incorrect_item",
+      "prototype_similarity": 0.8083080053329468,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 32,
+      "cluster_size": 37,
+      "candidate_name": "resolve_ongoing_issue",
+      "action": "create",
+      "target_intent": "resolve_ongoing_issue",
+      "prototype_similarity": 0.886000394821167,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 45,
+      "cluster_size": 26,
+      "candidate_name": "order_cancellation",
+      "action": "create",
+      "target_intent": "order_cancellation",
+      "prototype_similarity": 0.7578291893005371,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 37,
+      "cluster_size": 25,
+      "candidate_name": "packaging_issue",
+      "action": "create",
+      "target_intent": "packaging_issue",
+      "prototype_similarity": 0.6886640787124634,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 18,
+      "cluster_size": 21,
+      "candidate_name": "device_issue",
+      "action": "create",
+      "target_intent": "device_issue",
+      "prototype_similarity": 0.5610697865486145,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 9,
+      "cluster_size": 20,
+      "candidate_name": "product_issue",
+      "action": "merge",
+      "target_intent": "resolve_ongoing_issue",
+      "prototype_similarity": 0.7810755968093872,
+      "reason": "Same underlying problem of customers experiencing issues with products."
+    },
+    {
+      "cluster_id": 48,
+      "cluster_size": 16,
+      "candidate_name": "positive_feedback",
+      "action": "create",
+      "target_intent": "positive_feedback",
+      "prototype_similarity": 0.6027557849884033,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 12,
+      "cluster_size": 15,
+      "candidate_name": "membership_issue",
+      "action": "create",
+      "target_intent": "membership_issue",
+      "prototype_similarity": 0.5238111019134521,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 22,
+      "cluster_size": 15,
+      "candidate_name": "content_availability",
+      "action": "create",
+      "target_intent": "content_availability",
+      "prototype_similarity": 0.45575496554374695,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 92,
+      "cluster_size": 14,
+      "candidate_name": "support_access_issue",
+      "action": "create",
+      "target_intent": "support_access_issue",
+      "prototype_similarity": 0.8099555969238281,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 93,
+      "cluster_size": 14,
+      "candidate_name": "negative_feedback",
+      "action": "merge",
+      "target_intent": "poor_service",
+      "prototype_similarity": 0.8908979892730713,
+      "reason": "The candidate describes the same underlying problem of customers expressing dissatisfaction with the quality of service provided."
+    },
+    {
+      "cluster_id": 15,
+      "cluster_size": 13,
+      "candidate_name": "price_discrepancy",
+      "action": "create",
+      "target_intent": "price_discrepancy",
+      "prototype_similarity": 0.6128418445587158,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 83,
+      "cluster_size": 13,
+      "candidate_name": "billing_issue",
+      "action": "create",
+      "target_intent": "billing_issue",
+      "prototype_similarity": 0.7540342807769775,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 21,
+      "cluster_size": 12,
+      "candidate_name": "delivery_issue",
+      "action": "create",
+      "target_intent": "delivery_issue",
+      "prototype_similarity": 0.8313031196594238,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 23,
+      "cluster_size": 12,
+      "candidate_name": "delivery_issue",
+      "action": "merge",
+      "target_intent": "delivery_issue",
+      "prototype_similarity": 0.7870849370956421,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 232,
+      "cluster_size": 12,
+      "candidate_name": "response_delay",
+      "action": "merge",
+      "target_intent": "support_access_issue",
+      "prototype_similarity": 0.7531305551528931,
+      "reason": "Same underlying problem of customers experiencing difficulties in accessing or communicating with customer support services."
+    },
+    {
+      "cluster_id": 19,
+      "cluster_size": 11,
+      "candidate_name": "return_refund_request",
+      "action": "create",
+      "target_intent": "return_refund_request",
+      "prototype_similarity": 0.7602924108505249,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 52,
+      "cluster_size": 11,
+      "candidate_name": "unauthorized_charge",
+      "action": "create",
+      "target_intent": "unauthorized_charge",
+      "prototype_similarity": 0.67926025390625,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 121,
+      "cluster_size": 11,
+      "candidate_name": "delivery_status",
+      "action": "merge",
+      "target_intent": "delivery_status",
+      "prototype_similarity": 0.7396310567855835,
+      "reason": "Same underlying delivery-status problem."
+    },
+    {
+      "cluster_id": 41,
+      "cluster_size": 10,
+      "candidate_name": "overcharged_payment",
+      "action": "create",
+      "target_intent": "overcharged_payment",
+      "prototype_similarity": 0.7033300399780273,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 89,
+      "cluster_size": 10,
+      "candidate_name": "product_availability",
+      "action": "create",
+      "target_intent": "product_availability",
+      "prototype_similarity": 0.5743064284324646,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 5,
+      "cluster_size": 9,
+      "candidate_name": "app_issue",
+      "action": "create",
+      "target_intent": "app_issue",
+      "prototype_similarity": 0.6589094400405884,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 8,
+      "cluster_size": 9,
+      "candidate_name": "account_access_issue",
+      "action": "create",
+      "target_intent": "account_access_issue",
+      "prototype_similarity": 0.6439998149871826,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 90,
+      "cluster_size": 9,
+      "candidate_name": "delivery_conduct",
+      "action": "create",
+      "target_intent": "delivery_conduct",
+      "prototype_similarity": 0.7097923755645752,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 119,
+      "cluster_size": 9,
+      "candidate_name": "order_assistance",
+      "action": "create",
+      "target_intent": "order_assistance",
+      "prototype_similarity": 0.8051577806472778,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 2,
+      "cluster_size": 8,
+      "candidate_name": "service_availability",
+      "action": "create",
+      "target_intent": "service_availability",
+      "prototype_similarity": 0.4697495102882385,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 30,
+      "cluster_size": 8,
+      "candidate_name": "account_issue",
+      "action": "merge",
+      "target_intent": "account_access_issue",
+      "prototype_similarity": 0.7584733963012695,
+      "reason": "The underlying problem is the same: customers experiencing issues with accessing their account, including blocked, locked, or disabled accounts."
+    },
+    {
+      "cluster_id": 43,
+      "cluster_size": 7,
+      "candidate_name": "expedite_delivery",
+      "action": "create",
+      "target_intent": "expedite_delivery",
+      "prototype_similarity": 0.7474891543388367,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 44,
+      "cluster_size": 7,
+      "candidate_name": "address_change_request",
+      "action": "create",
+      "target_intent": "address_change_request",
+      "prototype_similarity": 0.6132594347000122,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 47,
+      "cluster_size": 7,
+      "candidate_name": "suspected_fake_product",
+      "action": "create",
+      "target_intent": "suspected_fake_product",
+      "prototype_similarity": 0.6470117568969727,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 107,
+      "cluster_size": 7,
+      "candidate_name": "cashback_issue",
+      "action": "create",
+      "target_intent": "cashback_issue",
+      "prototype_similarity": 0.6430855989456177,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 165,
+      "cluster_size": 7,
+      "candidate_name": "password_reset_issue",
+      "action": "create",
+      "target_intent": "password_reset_issue",
+      "prototype_similarity": 0.5922712087631226,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 243,
+      "cluster_size": 7,
+      "candidate_name": "return_pickup_issue",
+      "action": "create",
+      "target_intent": "return_pickup_issue",
+      "prototype_similarity": 0.6927061676979065,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 248,
+      "cluster_size": 7,
+      "candidate_name": "account_hacked",
+      "action": "create",
+      "target_intent": "account_hacked",
+      "prototype_similarity": 0.7396421432495117,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 40,
+      "cluster_size": 6,
+      "candidate_name": "preorder_issue",
+      "action": "create",
+      "target_intent": "preorder_issue",
+      "prototype_similarity": 0.627888023853302,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 6,
+      "cluster_size": 5,
+      "candidate_name": "suspicious_activity_report",
+      "action": "create",
+      "target_intent": "suspicious_activity_report",
+      "prototype_similarity": 0.6715761423110962,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 13,
+      "cluster_size": 5,
+      "candidate_name": "delivery_info_inquiry",
+      "action": "create",
+      "target_intent": "delivery_info_inquiry",
+      "prototype_similarity": 0.6569207310676575,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 29,
+      "cluster_size": 5,
+      "candidate_name": "promotion_issue",
+      "action": "create",
+      "target_intent": "promotion_issue",
+      "prototype_similarity": 0.5514980554580688,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 34,
+      "cluster_size": 5,
+      "candidate_name": "product_availability_issue",
+      "action": "create",
+      "target_intent": "product_availability_issue",
+      "prototype_similarity": 0.6613821983337402,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 67,
+      "cluster_size": 5,
+      "candidate_name": "checkout_issue",
+      "action": "create",
+      "target_intent": "checkout_issue",
+      "prototype_similarity": 0.6041535139083862,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 99,
+      "cluster_size": 5,
+      "candidate_name": "delivery_issue",
+      "action": "merge",
+      "target_intent": "delivery_issue",
+      "prototype_similarity": 0.8008289337158203,
+      "reason": "Same underlying delivery-status problem."
+    },
+    {
+      "cluster_id": 103,
+      "cluster_size": 5,
+      "candidate_name": "callback_request_issue",
+      "action": "create",
+      "target_intent": "callback_request_issue",
+      "prototype_similarity": 0.7189295291900635,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 108,
+      "cluster_size": 5,
+      "candidate_name": "delivery_speed_issue",
+      "action": "create",
+      "target_intent": "delivery_speed_issue",
+      "prototype_similarity": 0.7482644319534302,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 124,
+      "cluster_size": 5,
+      "candidate_name": "poor_service",
+      "action": "merge",
+      "target_intent": "poor_service",
+      "prototype_similarity": 0.6664807796478271,
+      "reason": "Same underlying problem of customers expressing dissatisfaction with the quality of service provided."
+    },
+    {
+      "cluster_id": 7,
+      "cluster_size": 4,
+      "candidate_name": "streaming_issue",
+      "action": "create",
+      "target_intent": "streaming_issue",
+      "prototype_similarity": 0.5122185945510864,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 27,
+      "cluster_size": 4,
+      "candidate_name": "order_issue",
+      "action": "create",
+      "target_intent": "order_issue",
+      "prototype_similarity": 0.7265981435775757,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 31,
+      "cluster_size": 4,
+      "candidate_name": "prime_subscription_query",
+      "action": "create",
+      "target_intent": "prime_subscription_query",
+      "prototype_similarity": 0.5945695638656616,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 42,
+      "cluster_size": 4,
+      "candidate_name": "contest_status",
+      "action": "create",
+      "target_intent": "contest_status",
+      "prototype_similarity": 0.4903450608253479,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 50,
+      "cluster_size": 4,
+      "candidate_name": "language_support_issue",
+      "action": "create",
+      "target_intent": "language_support_issue",
+      "prototype_similarity": 0.4392890930175781,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 51,
+      "cluster_size": 4,
+      "candidate_name": "contact_info_request",
+      "action": "create",
+      "target_intent": "contact_info_request",
+      "prototype_similarity": 0.6589317917823792,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 58,
+      "cluster_size": 4,
+      "candidate_name": "clarification_needed",
+      "action": "create",
+      "target_intent": "clarification_needed",
+      "prototype_similarity": 0.5633254051208496,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 59,
+      "cluster_size": 4,
+      "candidate_name": "gift_card_issue",
+      "action": "create",
+      "target_intent": "gift_card_issue",
+      "prototype_similarity": 0.4638051390647888,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 61,
+      "cluster_size": 4,
+      "candidate_name": "content_access_issue",
+      "action": "create",
+      "target_intent": "content_access_issue",
+      "prototype_similarity": 0.5689475536346436,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 71,
+      "cluster_size": 4,
+      "candidate_name": "feature_request",
+      "action": "create",
+      "target_intent": "feature_request",
+      "prototype_similarity": 0.3984679579734802,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 111,
+      "cluster_size": 4,
+      "candidate_name": "promotion_code_issue",
+      "action": "merge",
+      "target_intent": "promotion_issue",
+      "prototype_similarity": 0.5650685429573059,
+      "reason": "Same underlying problem related to issues with promotional offers."
+    },
+    {
+      "cluster_id": 120,
+      "cluster_size": 4,
+      "candidate_name": "cart_issue",
+      "action": "create",
+      "target_intent": "cart_issue",
+      "prototype_similarity": 0.5891448259353638,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 137,
+      "cluster_size": 4,
+      "candidate_name": "fraudulent_activity",
+      "action": "create",
+      "target_intent": "fraudulent_activity",
+      "prototype_similarity": 0.6819285154342651,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 140,
+      "cluster_size": 4,
+      "candidate_name": "subtitle_sync_issue",
+      "action": "create",
+      "target_intent": "subtitle_sync_issue",
+      "prototype_similarity": 0.43640655279159546,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 150,
+      "cluster_size": 4,
+      "candidate_name": "delivery_status",
+      "action": "merge",
+      "target_intent": "delivery_status",
+      "prototype_similarity": 0.6359555721282959,
+      "reason": "Same underlying delivery-status problem."
+    },
+    {
+      "cluster_id": 204,
+      "cluster_size": 4,
+      "candidate_name": "change_delivery_carrier",
+      "action": "create",
+      "target_intent": "change_delivery_carrier",
+      "prototype_similarity": 0.6555575132369995,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 0,
+      "cluster_size": 3,
+      "candidate_name": "discount_issue",
+      "action": "create",
+      "target_intent": "discount_issue",
+      "prototype_similarity": 0.5714966654777527,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 4,
+      "cluster_size": 3,
+      "candidate_name": "price_issue",
+      "action": "create",
+      "target_intent": "price_issue",
+      "prototype_similarity": 0.6354467272758484,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 11,
+      "cluster_size": 3,
+      "candidate_name": "delivery_issue",
+      "action": "merge",
+      "target_intent": "delivery_conduct",
+      "prototype_similarity": 0.6625919938087463,
+      "reason": "The new candidate 'delivery_issue' describes the same underlying operational customer problem as 'delivery_conduct', as both relate to issues with the conduct or behavior of delivery personnel."
+    },
+    {
+      "cluster_id": 14,
+      "cluster_size": 3,
+      "candidate_name": "courier_issue",
+      "action": "create",
+      "target_intent": "courier_issue",
+      "prototype_similarity": 0.6247442960739136,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 20,
+      "cluster_size": 3,
+      "candidate_name": "purchase_issue",
+      "action": "create",
+      "target_intent": "purchase_issue",
+      "prototype_similarity": 0.4250964820384979,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 25,
+      "cluster_size": 3,
+      "candidate_name": "positive_feedback",
+      "action": "merge",
+      "target_intent": "positive_feedback",
+      "prototype_similarity": 0.6562409400939941,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 26,
+      "cluster_size": 3,
+      "candidate_name": "prime_membership_query",
+      "action": "create",
+      "target_intent": "prime_membership_query",
+      "prototype_similarity": 0.6261819005012512,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 33,
+      "cluster_size": 3,
+      "candidate_name": "accidental_deletion_recovery",
+      "action": "create",
+      "target_intent": "accidental_deletion_recovery",
+      "prototype_similarity": 0.4326089322566986,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 36,
+      "cluster_size": 3,
+      "candidate_name": "contest_results_inquiry",
+      "action": "merge",
+      "target_intent": "contest_status",
+      "prototype_similarity": 0.6736202836036682,
+      "reason": "Same underlying contest results inquiry problem."
+    },
+    {
+      "cluster_id": 53,
+      "cluster_size": 3,
+      "candidate_name": "payment_issue",
+      "action": "create",
+      "target_intent": "payment_issue",
+      "prototype_similarity": 0.561721682548523,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 54,
+      "cluster_size": 3,
+      "candidate_name": "preorder_info_query",
+      "action": "create",
+      "target_intent": "preorder_info_query",
+      "prototype_similarity": 0.5960367918014526,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 62,
+      "cluster_size": 3,
+      "candidate_name": "wishlist_issue",
+      "action": "create",
+      "target_intent": "wishlist_issue",
+      "prototype_similarity": 0.43584877252578735,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 64,
+      "cluster_size": 3,
+      "candidate_name": "app_performance_issue",
+      "action": "merge",
+      "target_intent": "app_issue",
+      "prototype_similarity": 0.5992851257324219,
+      "reason": "Same underlying app performance issue problem."
+    },
+    {
+      "cluster_id": 68,
+      "cluster_size": 3,
+      "candidate_name": "promotion_issue",
+      "action": "merge",
+      "target_intent": "promotion_issue",
+      "prototype_similarity": 0.5830089449882507,
+      "reason": "Same underlying promotional offer problem."
+    },
+    {
+      "cluster_id": 69,
+      "cluster_size": 3,
+      "candidate_name": "compatibility_issue",
+      "action": "create",
+      "target_intent": "compatibility_issue",
+      "prototype_similarity": 0.47008368372917175,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 76,
+      "cluster_size": 3,
+      "candidate_name": "delivery_status",
+      "action": "merge",
+      "target_intent": "delivery_status",
+      "prototype_similarity": 0.7054963111877441,
+      "reason": "Same underlying delivery-status problem."
+    },
+    {
+      "cluster_id": 78,
+      "cluster_size": 3,
+      "candidate_name": "feature_request",
+      "action": "merge",
+      "target_intent": "feature_request",
+      "prototype_similarity": 0.5311797261238098,
+      "reason": "Same underlying feature request problem."
+    },
+    {
+      "cluster_id": 98,
+      "cluster_size": 3,
+      "candidate_name": "delivery_restriction_issue",
+      "action": "create",
+      "target_intent": "delivery_restriction_issue",
+      "prototype_similarity": 0.5612452030181885,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 100,
+      "cluster_size": 3,
+      "candidate_name": "website_issue",
+      "action": "create",
+      "target_intent": "website_issue",
+      "prototype_similarity": 0.5461775660514832,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 101,
+      "cluster_size": 3,
+      "candidate_name": "subscription_issue",
+      "action": "create",
+      "target_intent": "subscription_issue",
+      "prototype_similarity": 0.7425694465637207,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 105,
+      "cluster_size": 3,
+      "candidate_name": "general_complaint",
+      "action": "merge",
+      "target_intent": "poor_service",
+      "prototype_similarity": 0.6357977986335754,
+      "reason": "The candidate describes the same underlying problem of customer dissatisfaction with the quality of service."
+    },
+    {
+      "cluster_id": 109,
+      "cluster_size": 3,
+      "candidate_name": "return_refund_issue",
+      "action": "create",
+      "target_intent": "return_refund_issue",
+      "prototype_similarity": 0.667348325252533,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 123,
+      "cluster_size": 3,
+      "candidate_name": "exchange_offer_inquiry",
+      "action": "create",
+      "target_intent": "exchange_offer_inquiry",
+      "prototype_similarity": 0.3670375645160675,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 147,
+      "cluster_size": 3,
+      "candidate_name": "policy_clarification",
+      "action": "create",
+      "target_intent": "policy_clarification",
+      "prototype_similarity": 0.41916340589523315,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 180,
+      "cluster_size": 3,
+      "candidate_name": "delivery_status",
+      "action": "merge",
+      "target_intent": "delivery_status",
+      "prototype_similarity": 0.657706618309021,
+      "reason": "Same underlying delivery-status problem."
+    },
+    {
+      "cluster_id": 1,
+      "cluster_size": 2,
+      "candidate_name": "sale_notification_issue",
+      "action": "create",
+      "target_intent": "sale_notification_issue",
+      "prototype_similarity": 0.5353201031684875,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 10,
+      "cluster_size": 2,
+      "candidate_name": "email_content_issue",
+      "action": "create",
+      "target_intent": "email_content_issue",
+      "prototype_similarity": 0.47979435324668884,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 16,
+      "cluster_size": 2,
+      "candidate_name": "opt_out_issue",
+      "action": "create",
+      "target_intent": "opt_out_issue",
+      "prototype_similarity": 0.4614450931549072,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 24,
+      "cluster_size": 2,
+      "candidate_name": "follow_up_issue",
+      "action": "create",
+      "target_intent": "follow_up_issue",
+      "prototype_similarity": 0.6701135635375977,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 38,
+      "cluster_size": 2,
+      "candidate_name": "report_piracy",
+      "action": "create",
+      "target_intent": "report_piracy",
+      "prototype_similarity": 0.5245449542999268,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 39,
+      "cluster_size": 2,
+      "candidate_name": "installation_issue",
+      "action": "create",
+      "target_intent": "installation_issue",
+      "prototype_similarity": 0.6422736644744873,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 46,
+      "cluster_size": 2,
+      "candidate_name": "locker_accessibility_issue",
+      "action": "create",
+      "target_intent": "locker_accessibility_issue",
+      "prototype_similarity": 0.508194625377655,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 49,
+      "cluster_size": 2,
+      "candidate_name": "download_issue",
+      "action": "create",
+      "target_intent": "download_issue",
+      "prototype_similarity": 0.3783929944038391,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 55,
+      "cluster_size": 2,
+      "candidate_name": "return_shipping_cost_inquiry",
+      "action": "create",
+      "target_intent": "return_shipping_cost_inquiry",
+      "prototype_similarity": 0.49056321382522583,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 56,
+      "cluster_size": 2,
+      "candidate_name": "packaging_issue",
+      "action": "merge",
+      "target_intent": "packaging_issue",
+      "prototype_similarity": 0.4438627362251282,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 57,
+      "cluster_size": 2,
+      "candidate_name": "feature_request",
+      "action": "merge",
+      "target_intent": "feature_request",
+      "prototype_similarity": 0.5841565728187561,
+      "reason": "Same underlying feature-request problem."
+    },
+    {
+      "cluster_id": 60,
+      "cluster_size": 2,
+      "candidate_name": "device_command_help",
+      "action": "create",
+      "target_intent": "device_command_help",
+      "prototype_similarity": 0.4792177677154541,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 66,
+      "cluster_size": 2,
+      "candidate_name": "feature_availability",
+      "action": "create",
+      "target_intent": "feature_availability",
+      "prototype_similarity": 0.4425223469734192,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 70,
+      "cluster_size": 2,
+      "candidate_name": "content_availability",
+      "action": "merge",
+      "target_intent": "content_availability",
+      "prototype_similarity": 0.46102121472358704,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 73,
+      "cluster_size": 2,
+      "candidate_name": "sync_issue",
+      "action": "create",
+      "target_intent": "sync_issue",
+      "prototype_similarity": 0.49104657769203186,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 74,
+      "cluster_size": 2,
+      "candidate_name": "address_configuration_issue",
+      "action": "create",
+      "target_intent": "address_configuration_issue",
+      "prototype_similarity": 0.49388962984085083,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 79,
+      "cluster_size": 2,
+      "candidate_name": "complaint_filing_issue",
+      "action": "create",
+      "target_intent": "complaint_filing_issue",
+      "prototype_similarity": 0.5974063873291016,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 82,
+      "cluster_size": 2,
+      "candidate_name": "credit_issue",
+      "action": "create",
+      "target_intent": "credit_issue",
+      "prototype_similarity": 0.36213135719299316,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 86,
+      "cluster_size": 2,
+      "candidate_name": "delivery_status",
+      "action": "merge",
+      "target_intent": "delivery_status",
+      "prototype_similarity": 0.670339822769165,
+      "reason": "Same underlying delivery-status problem."
+    },
+    {
+      "cluster_id": 88,
+      "cluster_size": 2,
+      "candidate_name": "product_listing_correction",
+      "action": "create",
+      "target_intent": "product_listing_correction",
+      "prototype_similarity": 0.3165385127067566,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 94,
+      "cluster_size": 2,
+      "candidate_name": "device_repair_inquiry",
+      "action": "create",
+      "target_intent": "device_repair_inquiry",
+      "prototype_similarity": 0.4960974454879761,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 102,
+      "cluster_size": 2,
+      "candidate_name": "language_support_issue",
+      "action": "merge",
+      "target_intent": "language_support_issue",
+      "prototype_similarity": 0.3617324233055115,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 106,
+      "cluster_size": 2,
+      "candidate_name": "payment_method_issue",
+      "action": "create",
+      "target_intent": "payment_method_issue",
+      "prototype_similarity": 0.500396728515625,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 110,
+      "cluster_size": 2,
+      "candidate_name": "product_details_inquiry",
+      "action": "create",
+      "target_intent": "product_details_inquiry",
+      "prototype_similarity": 0.5418545007705688,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 113,
+      "cluster_size": 2,
+      "candidate_name": "invoice_issue",
+      "action": "create",
+      "target_intent": "invoice_issue",
+      "prototype_similarity": 0.4141906201839447,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 115,
+      "cluster_size": 2,
+      "candidate_name": "partnership_program_inquiry",
+      "action": "create",
+      "target_intent": "partnership_program_inquiry",
+      "prototype_similarity": 0.32507479190826416,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 116,
+      "cluster_size": 2,
+      "candidate_name": "delivery_status",
+      "action": "merge",
+      "target_intent": "delivery_status",
+      "prototype_similarity": 0.47492459416389465,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 117,
+      "cluster_size": 2,
+      "candidate_name": "sign_up_issue",
+      "action": "create",
+      "target_intent": "sign_up_issue",
+      "prototype_similarity": 0.4900110960006714,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 126,
+      "cluster_size": 2,
+      "candidate_name": "empty_package_received",
+      "action": "create",
+      "target_intent": "empty_package_received",
+      "prototype_similarity": 0.559185266494751,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 133,
+      "cluster_size": 2,
+      "candidate_name": "delivery_improvement",
+      "action": "create",
+      "target_intent": "delivery_improvement",
+      "prototype_similarity": 0.5495461225509644,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 134,
+      "cluster_size": 2,
+      "candidate_name": "offer_availability_issue",
+      "action": "create",
+      "target_intent": "offer_availability_issue",
+      "prototype_similarity": 0.47541987895965576,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 143,
+      "cluster_size": 2,
+      "candidate_name": "compatibility_check",
+      "action": "create",
+      "target_intent": "compatibility_check",
+      "prototype_similarity": 0.4987516403198242,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 154,
+      "cluster_size": 2,
+      "candidate_name": "multiple_charges",
+      "action": "create",
+      "target_intent": "multiple_charges",
+      "prototype_similarity": 0.6399267911911011,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 166,
+      "cluster_size": 2,
+      "candidate_name": "positive_feedback",
+      "action": "merge",
+      "target_intent": "positive_feedback",
+      "prototype_similarity": 0.37830281257629395,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 174,
+      "cluster_size": 2,
+      "candidate_name": "return_policy_inquiry",
+      "action": "create",
+      "target_intent": "return_policy_inquiry",
+      "prototype_similarity": 0.5512586236000061,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 182,
+      "cluster_size": 2,
+      "candidate_name": "delivery_status",
+      "action": "merge",
+      "target_intent": "delivery_status",
+      "prototype_similarity": 0.5566899180412292,
+      "reason": "Same underlying delivery-status problem."
+    },
+    {
+      "cluster_id": 186,
+      "cluster_size": 2,
+      "candidate_name": "compensation_denial",
+      "action": "create",
+      "target_intent": "compensation_denial",
+      "prototype_similarity": 0.6246837377548218,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 190,
+      "cluster_size": 2,
+      "candidate_name": "confirmation_issue",
+      "action": "create",
+      "target_intent": "confirmation_issue",
+      "prototype_similarity": 0.4875448942184448,
+      "reason": "No plausible semantic match."
+    },
+    {
+      "cluster_id": 205,
+      "cluster_size": 2,
+      "candidate_name": "order_mention_without_assistance",
+      "action": "create",
+      "target_intent": "order_mention_without_assistance",
+      "prototype_similarity": 0.5198067426681519,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 212,
+      "cluster_size": 2,
+      "candidate_name": "shipping_availability",
+      "action": "create",
+      "target_intent": "shipping_availability",
+      "prototype_similarity": 0.5747666358947754,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 219,
+      "cluster_size": 2,
+      "candidate_name": "delivery_photo_inquiry",
+      "action": "create",
+      "target_intent": "delivery_photo_inquiry",
+      "prototype_similarity": 0.5554638504981995,
+      "reason": "Different operational support problem."
+    },
+    {
+      "cluster_id": 241,
+      "cluster_size": 2,
+      "candidate_name": "third_party_seller_issue",
+      "action": "create",
+      "target_intent": "third_party_seller_issue",
+      "prototype_similarity": 0.5969603061676025,
+      "reason": "Different operational support problem."
+    }
+  ]
+}

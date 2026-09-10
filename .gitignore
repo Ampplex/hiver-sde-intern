@@ -3,15 +3,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Data
-data/
-*.parquet
-*.csv
-*.json
-*.npy
-
-# Exclude specific metadata files unless explicitly needed
-!data/processed/intent_taxonomy.json
+# Large Raw Datasets (not needed for quick reproduction)
+data/raw/
+data/processed/amazon_conversations.parquet
+data/processed/brand_AmazonHelp.parquet
+data/processed/support_cases.parquet
+data/processed/diagnostic_embeddings.npy
+data/processed/discovery_core_embeddings.npy
+data/processed/discovery_raw_embeddings.npy
+data/processed/core_problems_cache.json
+data/processed/retriever/
+.DS_Store
+*.DS_Store
 
 # Logs
 *.log
