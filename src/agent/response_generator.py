@@ -28,10 +28,20 @@ class ResponseGenerator:
     def generate_response(self, customer_message, predicted_intent, historical_cases):
         evidence = []
         for i, case in enumerate(historical_cases, 1):
+            raw_resps = case.get("amazonhelp_responses")
+            if raw_resps is None:
+                resp_list = []
+            elif hasattr(raw_resps, "tolist"):
+                resp_list = [str(x) for x in raw_resps.tolist()]
+            elif isinstance(raw_resps, (list, tuple)):
+                resp_list = [str(x) for x in raw_resps]
+            else:
+                resp_list = [str(raw_resps)]
+
             evidence.append({
                 "case_number": i,
                 "customer_problem": str(case.get("customer_problem", "")),
-                "amazonhelp_responses": [str(x) for x in (case.get("amazonhelp_responses") or [])],
+                "amazonhelp_responses": resp_list,
                 "first_amazon_response": str(case.get("first_amazon_response", "")),
             })
 

@@ -68,14 +68,24 @@ Return ONLY JSON with integer scores.
 
 def evidence_rows(df, ids):
     sub = df[df["conversation_id"].isin(ids)]
-    return [
-        {
+    rows = []
+    for r in sub.itertuples():
+        raw_resps = getattr(r, "amazonhelp_responses", None)
+        if raw_resps is None:
+            resps = []
+        elif hasattr(raw_resps, "tolist"):
+            resps = [str(x) for x in raw_resps.tolist()]
+        elif isinstance(raw_resps, (list, tuple)):
+            resps = [str(x) for x in raw_resps]
+        else:
+            resps = [str(raw_resps)]
+
+        rows.append({
             "conversation_id": r.conversation_id,
             "customer_problem": str(r.customer_problem),
-            "amazonhelp_responses": [str(x) for x in (r.amazonhelp_responses or [])],
-        }
-        for r in sub.itertuples()
-    ]
+            "amazonhelp_responses": resps,
+        })
+    return rows
 
 
 def main():
