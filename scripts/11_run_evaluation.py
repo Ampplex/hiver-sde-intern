@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
@@ -8,6 +9,7 @@ import pandas as pd
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 from tqdm import tqdm
 
+from src.agent.capability_guard import CapabilityGuard
 from src.agent.policy import apply_safety_policy
 from src.agent.response_generator import ResponseGenerator
 from src.classification.intent_classifier import IntentClassifier
@@ -29,12 +31,10 @@ def validate_gold(df, taxonomy):
     invalid = set(df["gold_intent"]) - set(taxonomy)
     if invalid:
         raise ValueError(f"Golden labels contain intents outside frozen taxonomy: {sorted(invalid)}")
-    
     valid_actions = {"auto_handle", "escalate"}
     invalid_actions = set(df["gold_action"]) - valid_actions
     if invalid_actions:
         raise ValueError(f"Golden labels contain invalid actions: {sorted(invalid_actions)}")
-        
     for col in ["gold_intent", "gold_action", "gold_reason"]:
         if df[col].astype(str).str.strip().eq("").any():
             raise ValueError(f"Golden labels contain empty values in {col}.")
@@ -62,7 +62,6 @@ def main():
     gold = pd.read_parquet(GOLD_PATH)
     validate_gold(gold, taxonomy)
 
-    # Hard leakage check: no golden case may enter the retrieval corpus.
     assignments = pd.read_parquet(ASSIGNMENTS_PATH)
     overlap = set(gold["conversation_id"].astype(str)) & set(assignments["conversation_id"].astype(str))
     if overlap:
@@ -71,6 +70,7 @@ def main():
     classifier = IntentClassifier()
     retriever = HybridRetriever()
     generator = ResponseGenerator()
+    capability_guard = CapabilityGuard()
     predictions = []
 
     for _, row in tqdm(gold.iterrows(), total=len(gold), desc="Evaluating agent"):
@@ -82,14 +82,23 @@ def main():
             historical = retriever.search(message, intent_id=intent, top_k=3)
 
         llm_output = {"draft_reply": None, "decision": "escalate", "reason": "Classifier uncertainty." if intent == "uncertain" else "No historical evidence retrieved."}
+        capability_result = None
         if intent != "uncertain" and historical:
             llm_output = generator.generate_response(message, intent, historical)
+            if str(llm_output.get("decision", "")).lower() == "auto_handle" and llm_output.get("draft_reply"):
+                capability_result = capability_guard.assess(
+                    customer_message=message,
+                    predicted_intent=intent,
+                    historical_cases=historical,
+                    draft_reply=llm_output.get("draft_reply"),
+                )
 
         final = apply_safety_policy(
             customer_message=message,
             classification=classification,
             historical_cases=historical,
             llm_output=llm_output,
+            capability_result=capability_result,
         )
 
         bm25 = retriever.search_bm25_only(message, top_k=1)
@@ -108,6 +117,8 @@ def main():
             "system_reason": final["reason"],
             "draft_reply": final["draft_reply"],
             "llm_reason": llm_output.get("reason"),
+            "capability_guard_decision": capability_result.get("decision") if capability_result else None,
+            "capability_guard_reason": capability_result.get("reason") if capability_result else None,
             "bm25_reply": bm25[0]["first_amazon_response"] if bm25 else None,
             "bm25_source_conversation_id": bm25[0]["conversation_id"] if bm25 else None,
         })
@@ -120,7 +131,6 @@ def main():
     non_abstained = result["system_intent"].ne("uncertain")
     conditional = result[non_abstained]
     conditional_labels = sorted(set(conditional["gold_intent"]) | set(conditional["system_intent"]))
-    
     intent_metrics = {
         "accuracy_including_abstentions": float(accuracy_score(result["gold_intent"], result["system_intent"])),
         "macro_f1_including_abstentions": float(f1_score(result["gold_intent"], result["system_intent"], labels=labels, average="macro", zero_division=0)),
@@ -134,7 +144,6 @@ def main():
     train_assigned = assignments["intent_id"].astype(str)
     majority_intent = Counter(train_assigned).most_common(1)[0][0]
     majority_acc = accuracy_score(result["gold_intent"], [majority_intent] * len(result))
-
     metrics = {
         "n_golden_examples": int(len(result)),
         "system_intent": intent_metrics,
@@ -145,7 +154,6 @@ def main():
     }
     with open(METRICS_PATH, "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
-
     print(json.dumps(metrics, indent=2))
 
 
