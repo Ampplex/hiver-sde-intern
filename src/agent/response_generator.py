@@ -1,7 +1,10 @@
 import json
 import os
+import random
+import time
 
 import boto3
+from botocore.config import Config
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,7 +16,8 @@ class ResponseGenerator:
     def __init__(self, region=None, model_id=None):
         self.region = region or os.getenv("AWS_REGION", "us-west-2")
         self.model_id = model_id or os.getenv("BEDROCK_MODEL_ID", "mistral.mistral-large-2407-v1:0")
-        self.client = boto3.client("bedrock-runtime", region_name=self.region)
+        cfg = Config(retries={"max_attempts": 10, "mode": "adaptive"})
+        self.client = boto3.client("bedrock-runtime", region_name=self.region, config=cfg)
 
     @staticmethod
     def _clean_json(text):
@@ -68,12 +72,18 @@ Rules:
 Return ONLY JSON:
 {{"draft_reply":"reply or null","decision":"auto_handle or escalate","reason":"short operational reason"}}
 """
-        try:
-            response = self.client.converse(
-                modelId=self.model_id,
-                messages=[{"role": "user", "content": [{"text": prompt}]}],
-                inferenceConfig={"temperature": 0.0},
-            )
-            return json.loads(self._clean_json(response["output"]["message"]["content"][0]["text"]))
-        except Exception as exc:
-            return {"draft_reply": None, "decision": "escalate", "reason": f"Generation failed: {type(exc).__name__}"}
+        last_error = None
+        for attempt in range(6):
+            try:
+                response = self.client.converse(
+                    modelId=self.model_id,
+                    messages=[{"role": "user", "content": [{"text": prompt}]}],
+                    inferenceConfig={"temperature": 0.0},
+                )
+                time.sleep(0.5 + random.uniform(0.1, 0.3))
+                return json.loads(self._clean_json(response["output"]["message"]["content"][0]["text"]))
+            except Exception as exc:
+                last_error = exc
+                delay = min(60.0, 2.0 * (2 ** attempt)) * random.uniform(0.8, 1.2)
+                time.sleep(delay)
+        return {"draft_reply": None, "decision": "escalate", "reason": f"Generation failed: {type(last_error).__name__}"}
