@@ -89,7 +89,10 @@ def main():
         drop=True
     )
 
-    train_df = train_df.reset_index(
+    train_df = train_df.sample(
+        n=min(8000, len(train_df)),
+        random_state=42
+    ).reset_index(
         drop=True
     )
 

@@ -7,160 +7,66 @@ from src.retrieval.hybrid_retriever import HybridRetriever
 
 
 def main():
-
-    print("Initializing support agent...")
-
     classifier = IntentClassifier()
     retriever = HybridRetriever()
     generator = ResponseGenerator()
 
-    customer_message = input(
-        "\nEnter customer message: "
-    ).strip()
-
+    customer_message = input("\nEnter customer message: ").strip()
     if not customer_message:
         print("No customer message supplied.")
         return
 
-    print("\n" + "=" * 60)
-    print("NEW CUSTOMER MESSAGE")
-    print("=" * 60)
-    print(customer_message)
-
-    # ============================================
-    # 1. Classification
-    # ============================================
-
-    classification = classifier.predict(
-        customer_message
-    )
-
+    classification = classifier.predict(customer_message)
     print("\n[1] CLASSIFICATION")
+    print(f"Intent: {classification['intent_id']}")
+    print(f"Predicted intent: {classification['predicted_intent_id']}")
+    print(f"Similarity: {classification['similarity_score']:.4f}")
+    print(f"Second-best: {classification['second_similarity_score']:.4f}")
+    print(f"Margin: {classification['margin']:.4f}")
 
-    print(
-        f"Intent: "
-        f"{classification['intent_id']}"
-    )
-
-    print(
-        f"Similarity: "
-        f"{classification['similarity_score']:.4f}"
-    )
-
-    print(
-        f"Second-best: "
-        f"{classification['second_similarity_score']:.4f}"
-    )
-
-    print(
-        f"Margin: "
-        f"{classification['margin']:.4f}"
-    )
-
-    if classification["intent_id"] == "uncertain":
-
-        print("\nDECISION: ESCALATE")
-        print(
-            "REASON: Classifier uncertainty."
+    historical_cases = []
+    if classification["intent_id"] != "uncertain":
+        historical_cases = retriever.search(
+            customer_message,
+            intent_id=classification["intent_id"],
+            top_k=3,
         )
-
-        return
-
-    # ============================================
-    # 2. Historical retrieval
-    # ============================================
-
-    historical_cases = retriever.search(
-        query=customer_message,
-        intent_id=classification["intent_id"],
-        top_k=3,
-    )
 
     print("\n[2] HISTORICAL EVIDENCE")
+    for i, case in enumerate(historical_cases, start=1):
+        print(f"\nCase {i}: {case['conversation_id']}")
+        print(f"Dense score: {case['dense_score']:.4f}")
+        print(f"RRF score: {case['rrf_score']:.4f}")
+        print(f"AmazonHelp: {case['first_amazon_response']}")
 
-    for i, case in enumerate(
-        historical_cases,
-        start=1,
-    ):
-
-        print(
-            f"\nCase {i}"
+    llm_output = {
+        "draft_reply": None,
+        "decision": "escalate",
+        "reason": "Classifier uncertainty." if classification["intent_id"] == "uncertain" else "Generation not attempted.",
+    }
+    if classification["intent_id"] != "uncertain" and historical_cases:
+        llm_output = generator.generate_response(
+            customer_message=customer_message,
+            predicted_intent=classification["intent_id"],
+            historical_cases=historical_cases,
         )
-
-        print(
-            f"Dense score: "
-            f"{case['dense_score']:.4f}"
-        )
-
-        print(
-            f"RRF score: "
-            f"{case['rrf_score']:.4f}"
-        )
-
-        print(
-            f"AmazonHelp: "
-            f"{case['first_amazon_response']}"
-        )
-
-    # ============================================
-    # 3. Generate candidate response
-    # ============================================
-
-    llm_output = generator.generate_response(
-        customer_message=customer_message,
-        predicted_intent=classification[
-            "intent_id"
-        ],
-        historical_cases=historical_cases,
-    )
-
-    # ============================================
-    # 4. Deterministic safety policy
-    # ============================================
 
     final = apply_safety_policy(
         customer_message=customer_message,
         classification=classification,
         historical_cases=historical_cases,
         llm_output=llm_output,
-        retrieval_threshold=float(
-            os.getenv(
-                "RETRIEVAL_EVIDENCE_THRESHOLD",
-                "0.55",
-            )
-        ),
-        min_evidence_cases=int(
-            os.getenv(
-                "MIN_STRONG_EVIDENCE_CASES",
-                "2",
-            )
-        ),
+        retrieval_threshold=float(os.getenv("RETRIEVAL_EVIDENCE_THRESHOLD", "0.55")),
+        min_evidence_cases=int(os.getenv("MIN_STRONG_EVIDENCE_CASES", "2")),
     )
-
-    # ============================================
-    # 5. Final result
-    # ============================================
 
     print("\n" + "=" * 60)
     print("FINAL AGENT DECISION")
     print("=" * 60)
-
-    print(
-        f"Decision: "
-        f"{final['decision'].upper()}"
-    )
-
-    print(
-        f"Reason: "
-        f"{final['reason']}"
-    )
-
-    if final["decision"] == "auto_handle":
-
-        print(
-            f"\nDraft reply:\n"
-            f"{final['draft_reply']}"
-        )
+    print(f"Decision: {final['decision'].upper()}")
+    print(f"Reason: {final['reason']}")
+    if final["draft_reply"]:
+        print(f"\nDraft reply:\n{final['draft_reply']}")
 
 
 if __name__ == "__main__":

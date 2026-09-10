@@ -54,6 +54,11 @@ def extract_brand(brand_author_id):
         if not selected.empty:
             chunks.append(selected)
 
+    if not chunks:
+        raise ValueError(
+            f"No tweets found for brand author_id={brand_author_id!r}."
+        )
+
     brand_df = pd.concat(chunks, ignore_index=True)
 
     brand_df["created_at"] = pd.to_datetime(

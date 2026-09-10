@@ -1,154 +1,53 @@
+import json
+from pathlib import Path
+
 import pandas as pd
 from scipy.stats import spearmanr
 from sklearn.metrics import cohen_kappa_score
 
-
-JUDGE_PATH = (
-    "data/processed/eval/llm_judge_scores.parquet"
-)
-
-HUMAN_PATH = (
-    "data/processed/eval/human_judge_scores.csv"
-)
-
-METRICS = [
-    "correctness",
-    "groundedness",
-    "resolution_appropriateness",
-    "completeness",
-    "communication_quality",
-    "overall",
-]
+JUDGE_PATH = Path("data/processed/eval/llm_judge_scores.parquet")
+HUMAN_PATH = Path("data/processed/eval/human_judge_scores.csv")
+OUTPUT_PATH = Path("data/processed/eval/judge_human_agreement.json")
+METRICS = ["correctness", "groundedness", "resolution_appropriateness", "completeness", "communication_quality", "overall"]
+MIN_HUMAN_OVERLAP = 40
 
 
-def validate_scores(
-    df,
-    columns,
-    source_name,
-):
-    for column in columns:
-
-        if column not in df.columns:
-            raise ValueError(
-                f"{source_name} is missing column: "
-                f"{column}"
-            )
-
-        values = pd.to_numeric(
-            df[column],
-            errors="coerce",
-        )
-
-        if values.isna().any():
-            raise ValueError(
-                f"{source_name}.{column} contains "
-                "missing or non-numeric values."
-            )
-
-        if (
-            (values < 1)
-            | (values > 5)
-        ).any():
-
-            raise ValueError(
-                f"{source_name}.{column} contains "
-                "scores outside 1-5."
-            )
+def validate_scores(df, columns, source):
+    missing = set(columns) - set(df.columns)
+    if missing:
+        raise ValueError(f"{source} missing columns: {sorted(missing)}")
+    for col in columns:
+        values = pd.to_numeric(df[col], errors="coerce")
+        if values.isna().any() or (values < 1).any() or (values > 5).any():
+            raise ValueError(f"{source}.{col} contains invalid scores.")
 
 
 def main():
-
-    llm = pd.read_parquet(
-        JUDGE_PATH
-    )
-
-    human = pd.read_csv(
-        HUMAN_PATH
-    )
-
-    if "conversation_id" not in human.columns:
-        raise ValueError(
-            "human_judge_scores.csv must contain "
-            "conversation_id."
-        )
-
+    llm = pd.read_parquet(JUDGE_PATH)
+    human = pd.read_csv(HUMAN_PATH)
+    validate_scores(llm, [f"system_{m}" for m in METRICS], "LLM judge")
+    validate_scores(human, METRICS, "Human judge")
     if human["conversation_id"].duplicated().any():
-        raise ValueError(
-            "human_judge_scores.csv contains duplicate "
-            "conversation_id values."
-        )
+        raise ValueError("Duplicate human conversation IDs.")
 
-    validate_scores(
-        llm,
-        [
-            f"system_{metric}"
-            for metric in METRICS
-        ],
-        "LLM judge",
-    )
+    merged = llm.merge(human[["conversation_id", *METRICS]], on="conversation_id", how="inner", validate="one_to_one")
+    if len(merged) < MIN_HUMAN_OVERLAP:
+        raise ValueError(f"Need at least {MIN_HUMAN_OVERLAP} overlapping examples; found {len(merged)}.")
 
-    validate_scores(
-        human,
-        METRICS,
-        "Human judge",
-    )
-
-    merged = llm.merge(
-        human,
-        on="conversation_id",
-        how="inner",
-        validate="one_to_one",
-    )
-
-    if len(merged) < 20:
-        raise ValueError(
-            "Need at least 20 overlapping "
-            "human-judged examples."
-        )
-
-    print(
-        f"Agreement subset: n={len(merged)}"
-    )
-
-    print("\n=== SYSTEM JUDGE / HUMAN AGREEMENT ===")
-
+    results = {"n_overlap": int(len(merged)), "metrics": {}}
     for metric in METRICS:
+        a = merged[f"system_{metric}"].astype(int)
+        b = merged[metric].astype(int)
+        rho = spearmanr(a, b).statistic
+        kappa = cohen_kappa_score(a, b, weights="quadratic")
+        mae = (a - b).abs().mean()
+        results["metrics"][metric] = {"spearman": float(rho), "quadratic_kappa": float(kappa), "mae": float(mae)}
+        print(f"{metric:<30} Spearman={rho:.3f} QuadraticKappa={kappa:.3f} MAE={mae:.3f}")
 
-        llm_scores = pd.to_numeric(
-            merged[
-                f"system_{metric}"
-            ],
-            errors="coerce",
-        ).astype(int)
-
-        human_scores = pd.to_numeric(
-            merged[metric],
-            errors="coerce",
-        ).astype(int)
-
-        rho_result = spearmanr(
-            llm_scores,
-            human_scores,
-        )
-
-        kappa = cohen_kappa_score(
-            llm_scores,
-            human_scores,
-            weights="quadratic",
-        )
-
-        mae = (
-            (llm_scores - human_scores)
-            .abs()
-            .mean()
-        )
-
-        print(
-            f"{metric:<30}"
-            f"Spearman={rho_result.statistic:.3f} "
-            f"QuadraticKappa={kappa:.3f} "
-            f"MAE={mae:.3f}"
-        )
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2)
+    print(f"Agreement results: {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
