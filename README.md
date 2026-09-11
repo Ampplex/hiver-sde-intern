@@ -10,7 +10,7 @@ This repository satisfies all 5 core deliverables specified in the **SDE Intern 
 
 | Deliverable | Requirement | Location / Artifact |
 | :--- | :--- | :--- |
-| **1. Runnable Pipeline Repo** | Reproduce headline results in **<15 minutes** | [`run_quick_reproduction.sh`](run_quick_reproduction.sh), [`scripts/verify_submission_artifacts.py`](scripts/verify_submission_artifacts.py) |
+| **1. Runnable Pipeline Repo** | Reproduce headline results in **<15 minutes** (measured: **~12s** quick path; **~4–5 min** live re-run) | [`run_quick_reproduction.sh`](run_quick_reproduction.sh), [`scripts/verify_submission_artifacts.py`](scripts/verify_submission_artifacts.py) |
 | **2. Golden Evaluation Set** | 150–250 hand-labelled examples with sampling & labeling note | [`data/processed/eval/golden_labels_manual.csv`](data/processed/eval/golden_labels_manual.csv), [`REPORT.md`](REPORT.md) |
 | **3. Evaluation Harness** | Automated metrics + LLM judge + Human–Judge concordance | [`scripts/11_run_evaluation.py`](scripts/11_run_evaluation.py), [`scripts/12_llm_judge.py`](scripts/12_llm_judge.py), [`scripts/13_judge_human_agreement.py`](scripts/13_judge_human_agreement.py) |
 | **4. Technical Report** | Max 6 pages: framing, 2 baselines, top 5 failure modes, misleading headline section, roadmap | [`REPORT.md`](REPORT.md) |
@@ -143,9 +143,12 @@ python scripts/verify_submission_artifacts.py
 bash run_quick_reproduction.sh
 ```
 
-This path reuses the frozen artifacts/checkpoints and runs the retrieval build, classifier compilation, component smoke tests, 200-case evaluation, 47-case LLM-judge benchmark, and human–judge agreement workflow.
-
-**Note:** The quick path supports checkpoint resumption. Live re-evaluation requires AWS Bedrock credentials and reruns the model-dependent evaluation steps.
+* **Reproduction Runtime:**
+  * **Quick Verification Mode (Default):** **~12–15 seconds** to validate zero leakage, compile 104-intent centroids, build the hybrid retriever index from 8,000 cases, run Bedrock smoke tests, and reproduce all metrics, tables, and concordance scores.
+  * **Full Cold Live Re-Inference (`--recompute`):** **~4–5 minutes** to rerun live LLM inference through Mistral Large across all 200 evaluation cases and the 47-case LLM-as-a-judge benchmark from scratch (comfortably below the 15-minute mandate).
+  * **Zero-Credential Offline Mode:** **~4 seconds** fallback if AWS credentials are not configured, verifying artifacts without errors.
+* **Workflow:** This path reuses the frozen artifacts/checkpoints and runs the retrieval build, classifier compilation, component smoke tests, 200-case evaluation, 47-case LLM-judge benchmark, and human–judge agreement workflow.
+* **Credentials Note:** The quick path supports checkpoint resumption. Live re-evaluation requires AWS Bedrock credentials and reruns the model-dependent evaluation steps.
 
 ### 4. Interactive Single-Query Evaluation
 
