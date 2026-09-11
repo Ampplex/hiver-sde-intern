@@ -89,7 +89,7 @@ Customer Message
   AUTO_HANDLE
 ```
 
-1. **Intent Classification & Abstention:** Incoming tweets are embedded via Amazon Titan Embeddings v2 and scored against 104 frozen prototype centroids. If cosine similarity is < 0.62 or margin to the runner-up intent is < 0.05, the system immediately abstains and escalates.
+1. **Intent Classification & Abstention:** Incoming tweets are embedded via Amazon Titan Embeddings v2 and scored against 104 frozen prototype centroids. If cosine similarity is < 0.45 or margin to the runner-up intent is < 0.02, the system immediately abstains and escalates.
 2. **Intent-Aware Hybrid Retrieval:** When confident, the message and predicted intent query an 8,000-case support corpus using BM25 and Titan Dense embeddings, combined via Reciprocal Rank Fusion (RRF) with intent-matching bonuses.
 3. **Asymmetric Trust Response Generation:** The top historical cases are injected into Mistral Large (2407 via Bedrock). The prompt enforces that historical customer text is untrusted context, while AmazonHelp replies represent the authoritative resolution pattern.
 4. **LLM CapabilityGuard:** A dedicated Mistral Large call inspects the draft reply against the customer inquiry. It explicitly evaluates whether the inquiry can be resolved with public informational guidance, or whether it requires private state, external actions, or human support workflows.
@@ -185,13 +185,13 @@ Detailed breakdown of the primary failure modes with concrete conversation examp
   * *CapabilityGuard Decision:* `escalate` — *"Providing a link for order-specific feedback requires customer-specific state and initiation of a human support workflow."*
   * *Root Cause:* Historical brand behavior relied on webform redirection; the guard strictly prohibits treating form handoffs as autonomous resolutions.
 
-### Mode 4: Colloquial Phrasing and Multi-Aspect Tail Inquiries (10 cases)
+### Mode 4: Colloquial Phrasing and Multi-Aspect Tail Inquiries (69 cases)
 * **Mechanism:** Customer queries utilizing heavy slang, indirect sarcasm, or unconventional grammar deviate from the averaged semantic centroid of the intent prototypes.
-* **Concrete Example (Case 2424503):**
-  * *Customer Tweet:* `"@119625 Pretty lame collection. Please increase it to make it attractive and have language settings."`
-  * *Classification:* Similarity: 0.583 (< 0.62 threshold).
-  * *System Action:* Escalated due to `Classifier uncertainty`.
-  * *Root Cause:* The query blends feedback, feature requests, and regional catalog commentary, diluting the cosine similarity against pure prototype vectors.
+* **Concrete Example (Case 559857):**
+  * *Customer Tweet:* `"@115833 For the love of God, please make it easier to listen to religious Christmas music. “Lean on Me” ain’t it, nor is “Lead me Home Precious Lord”"`
+  * *Classification:* Similarity: 0.206 (< 0.45 threshold), margin: 0.0005 (< 0.02 threshold).
+  * *System Action:* Escalated due to `Classifier uncertainty` (`system_intent: uncertain`).
+  * *Root Cause:* Highly colloquial phrasing, sarcasm, and diffuse commentary dilute cosine similarity against prototype vectors, safely triggering classifier abstention.
 
 ### Mode 5: Length-Based Ambiguity Ceiling on Multi-Grievance Rants
 * **Mechanism:** Customers venting on Twitter often concatenate multiple grievances into a single long tweet. Attempting single-intent automation on multi-issue complaints produces incomplete, tone-deaf replies.

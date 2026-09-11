@@ -67,7 +67,7 @@ flowchart TD
 
 ### 1. Intent Discovery & Classification
 * **Discovery**: An LLM-assisted intent discovery pipeline normalized noisy customer messages into underlying operational problems, clustered representations via agglomerative clustering, and consolidated candidates into a frozen 104-intent taxonomy.
-* **Classifier**: Incoming tweets are classified via cosine similarity to the 104 prototype centroids. The classifier explicitly outputs `uncertain` if top similarity $< 0.62$ or top-2 margin $< 0.05$.
+* **Classifier**: Incoming tweets are classified via cosine similarity to the 104 prototype centroids. The classifier explicitly outputs `uncertain` if top similarity $< 0.45$ or top-2 margin $< 0.02$.
 
 ### 2. Intent-Aware Hybrid Retrieval
 When the classifier is confident, the message and predicted intent query the 8,000-case historical support corpus:
