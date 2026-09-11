@@ -191,7 +191,7 @@ AmazonHelp: @484122 Sometimes we ask our customer to reset their account passwor
 
 Customer: @AmazonHelp Ok thanks
 
-AmazonHelp: @484122 You're welcome, Nitesh. Do keep us posted for any further assistance. ^MP",password_reset_issue,escalate,Password reset failure requires account-specific investigation.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @484122 You're welcome, Nitesh. Do keep us posted for any further assistance. ^MP",password_reset_issue,auto_handle,This is a password-reset workflow issue that can begin with standard guidance.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 2803383,This is unacceptable and I’m livid.  @115821 come on now! https://t.co/HOX2hf1zIA,"@781981 I'm very sorry for the delay with your package, Maggie! We definitely understand the frustration! Delayed orders typically arrive 1-2 days after the missed delivery date. Please let us know if it hasn't arrived by end date of new delivery date. ^HM","Customer: This is unacceptable and I’m livid.  @115821 come on now! https://t.co/HOX2hf1zIA
 
 AmazonHelp: @781981 I'm very sorry for the delay with your package, Maggie! We definitely understand the frustration! Delayed orders typically arrive 1-2 days after the missed delivery date. Please let us know if it hasn't arrived by end date of new delivery date. ^HM
@@ -398,7 +398,7 @@ AmazonHelp: @234409 Thank you for contacting us. We are here to help! Make sure 
 
 Customer: @AmazonHelp Tried that - there is no household option? See screenshots... https://t.co/RBtwmTOXjU
 
-AmazonHelp: @234409 I'm sorry for the trouble! You may not have that option since your account is through Prime Student. Instead, we suggest having your girlfriend invite you to her household to link your accounts through this page: https://t.co/pu4R4b8x0C ^MB",prime_subscription_query,escalate,Household sharing limitation on student Prime requires account configuration.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @234409 I'm sorry for the trouble! You may not have that option since your account is through Prime Student. Instead, we suggest having your girlfriend invite you to her household to link your accounts through this page: https://t.co/pu4R4b8x0C ^MB",prime_subscription_query,auto_handle,This is a general question about Prime household/student benefits.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 2689277,"@115830 yet another failure at delivery by 8pm tonight so let’s just make a date up to deliver...er 21Nov.
 What are we paying £79 a year for?",@756091 Oh no! So sorry to hear this! Please contact us here: https://t.co/JzP7hlA23B so we can look into the issue in real time with you. ^AD,"Customer: @115830 yet another failure at delivery by 8pm tonight so let’s just make a date up to deliver...er 21Nov.
 What are we paying £79 a year for?
@@ -523,7 +523,7 @@ Customer: @AmazonHelp Suddenly all changed, now saying out for delivery Today! A
 
 AmazonHelp: @401716 Thanks for reacjing out. The CVC is neither required to save the card on your account nor to make a purchase. ^QJ
 
-Customer: @AmazonHelp I'll try to make a payment using Amazon Pay, I hope I don't have any issue with a Card issued outside the States. I'll let you know...",payment_method_issue,escalate,Payment card security and CVV verification requires account payment setup.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+Customer: @AmazonHelp I'll try to make a payment using Amazon Pay, I hope I don't have any issue with a Card issued outside the States. I'll let you know...",payment_method_issue,auto_handle,This asks about card verification during setup and can start with general payment guidance.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 909894,"@115850 Would like to report a wrong delivery. Ordered Micro-USB cables for my parents, got TypeC cables instead # 403-6079381-8826765 1/2",@336123 I am sorry for the inconvenience with your order. Call us here: https://t.co/vlvfJr4nN9 &amp; we'll get this sorted for you. (1/2)^SF,"Customer: @115850 Would like to report a wrong delivery. Ordered Micro-USB cables for my parents, got TypeC cables instead # 403-6079381-8826765 1/2
 
 AmazonHelp: @336123 I am sorry for the inconvenience with your order. Call us here: https://t.co/vlvfJr4nN9 &amp; we'll get this sorted for you. (1/2)^SF
@@ -623,7 +623,7 @@ Customer: @AmazonHelp Why would you tell me this when there's a known global str
 
 Customer: @AmazonHelp Did you look at the image I shared? Here it is again. https://t.co/SntcNvTxp4
 
-AmazonHelp: @163861 I understand your frustration! Was support able to provide any other troubleshooting steps? ^SJ",streaming_issue,escalate,Live stream playback failure requires device/account troubleshooting.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @163861 I understand your frustration! Was support able to provide any other troubleshooting steps? ^SJ",streaming_issue,auto_handle,The customer reports a streaming failure that can begin with standard troubleshooting.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 824736,@AmazonHelp Hi! What do you do for customers who do not receive their Amazon prime package in 2 days shipping? Please help.,"@316420 Hi there, Emily! We'd be happy to help any way we can! Just to clarify, have we missed the date given via checkout/e-mail? ^WJ","Customer: @AmazonHelp Hi! What do you do for customers who do not receive their Amazon prime package in 2 days shipping? Please help.
 
 AmazonHelp: @316420 Hi there, Emily! We'd be happy to help any way we can! Just to clarify, have we missed the date given via checkout/e-mail? ^WJ
@@ -641,7 +641,7 @@ AmazonHelp: @214948 Which Amazon site are you using? ^BM
 
 Customer: @AmazonHelp Tried the Android app and https://t.co/HhingwPEw6
 
-AmazonHelp: @214948 Have you reported this to us directly previously or? ^NV",subtitle_sync_issue,escalate,Missing subtitles for specific episodes requires content inspection.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @214948 Have you reported this to us directly previously or? ^NV",subtitle_sync_issue,auto_handle,The customer reports missing subtitles for particular episodes.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 532562,@115830 I keep trying to buy a product. It says I have bought it but then it does not send me the confirmation email or show up in my order history.,"@243367 Hmm, that is really strange! So you go through the checkout process and click buy now and it says that you have successfully placed your order? Did you check your junk/spam mail for the email?^MA","Customer: @115830 I keep trying to buy a product. It says I have bought it but then it does not send me the confirmation email or show up in my order history.
 
 AmazonHelp: @243367 Hmm, that is really strange! So you go through the checkout process and click buy now and it says that you have successfully placed your order? Did you check your junk/spam mail for the email?^MA
@@ -783,7 +783,7 @@ Customer: @AmazonHelp Done, now by when will this issue get sorted ?
 AmazonHelp: @517197 Thank you for the heads up, Rama. We'll get in touch with you soon. Appreciate your understanding. ^HD",delivery_issue,escalate,A specific order is marked delivered but was not received.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 2200709,@115850 can refund received in the form of amazon pay balance be transfred to bank account ?,"@344648 Unfortunately, the amount from amazon pay balance cannot be transferred to your bank account. However, you may utilize this amount for placing orders on our website or our partner websites listed here: https://t.co/QniX1wY4ev. ^GD","Customer: @115850 can refund received in the form of amazon pay balance be transfred to bank account ?
 
-AmazonHelp: @344648 Unfortunately, the amount from amazon pay balance cannot be transferred to your bank account. However, you may utilize this amount for placing orders on our website or our partner websites listed here: https://t.co/QniX1wY4ev. ^GD",payment_issue,auto_handle,General policy inquiry on transferring Amazon Pay balance to a bank account; answerable with public policy.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @344648 Unfortunately, the amount from amazon pay balance cannot be transferred to your bank account. However, you may utilize this amount for placing orders on our website or our partner websites listed here: https://t.co/QniX1wY4ev. ^GD",payment_issue,escalate,The customer asks to transfer a refund balance to a bank account.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 225526,@115821 how to make a complaint?,"@169871 Hi, can you tell us a bit about the issue without sharing any personal or account info? ^JJ","Customer: @115821 how to make a complaint?
 
 AmazonHelp: @169871 Hi, can you tell us a bit about the issue without sharing any personal or account info? ^JJ
@@ -929,7 +929,7 @@ Customer: @AmazonHelp The photo of the screen in that video does not look like m
 
 Customer: @AmazonHelp Here's a screenshot of my kindle app when I'm looking at my library https://t.co/dNTGcAPgXU
 
-AmazonHelp: @189069 I'm sorry you are having these issues. Please contact us here:  https://t.co/hApLpMlfHN so we can get someone to assist you with this issue directly. ^BT",purchase_issue,auto_handle,General app limitation inquiry regarding purchasing Kindle books in-app; answerable with public guidance.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @189069 I'm sorry you are having these issues. Please contact us here:  https://t.co/hApLpMlfHN so we can get someone to assist you with this issue directly. ^BT",purchase_issue,escalate,The customer cannot purchase a Kindle book in the app.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 283945,Festive surprise! @115850 . Don't drink and deliver! Sent my package to Mumbai instead of Kolkata 😂 @AmazonHelp https://t.co/ooSshoUax8,@183632 Sorry to hear that. Kindly get in touch with us here: https://t.co/anRYosHW6y and we’ll be glad to help you. ^NS,"Customer: Festive surprise! @115850 . Don't drink and deliver! Sent my package to Mumbai instead of Kolkata 😂 @AmazonHelp https://t.co/ooSshoUax8
 
 AmazonHelp: @183632 Sorry to hear that. Kindly get in touch with us here: https://t.co/anRYosHW6y and we’ll be glad to help you. ^NS
@@ -945,7 +945,7 @@ AmazonHelp: @183632 Apologies for the ordeal. This wasn't intended. Please share
 
 Customer: Oh, for goodness sakes. Hey @AmazonHelp, should I just send this back and get a replacement? https://t.co/h7IxQXnQV9
 
-AmazonHelp: @165002 I'm so sorry your Blu-ray arrived damaged! Yes, you can see refund and replacement options here: https://t.co/pT3fnPmZXW ^AM",return_refund_request,escalate,Damaged item replacement requires order lookup and processing.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @165002 I'm so sorry your Blu-ray arrived damaged! Yes, you can see refund and replacement options here: https://t.co/pT3fnPmZXW ^AM",return_refund_request,auto_handle,The customer asks whether a damaged item can be returned for replacement.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 2642040,"@115821 once again: 2 day shipping is 2 days, not 3 is #betsydevos running the show over there while #Bezos is counting his pile of money?",@565502 I'm sorry for the wait! Two-Day shipping refers to transit time in business days once an order's shipped! (1/2),"Customer: @115821 once again: 2 day shipping is 2 days, not 3 is #betsydevos running the show over there while #Bezos is counting his pile of money?
 
 AmazonHelp: @565502 I'm sorry for the wait! Two-Day shipping refers to transit time in business days once an order's shipped! (1/2)
@@ -1329,7 +1329,7 @@ AmazonHelp: @137136 If you download the song again does the issue persist? I sug
 
 Customer: @AmazonHelp Deleting the app and reinstalling worked!
 
-AmazonHelp: @137136 Glad to hear you fixed it! It's always the worst when you can't hear your fave tunes! If you need anything in future please don't hesitate to reach out. ^HS",content_access_issue,escalate,Digital content access issue requires customer/device-specific troubleshooting.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @137136 Glad to hear you fixed it! It's always the worst when you can't hear your fave tunes! If you need anything in future please don't hesitate to reach out. ^HS",content_access_issue,auto_handle,A downloaded song is not playing and can begin with digital-content troubleshooting.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 894597,Lazy @115821 delivery person strikes again! Second time in a month or so. https://t.co/nxYYJGSGJQ,@332413 I'm sorry it wasn't delivered to your door. Who was the carrier for this delivery? ^AF,"Customer: Lazy @115821 delivery person strikes again! Second time in a month or so. https://t.co/nxYYJGSGJQ
 
 AmazonHelp: @332413 I'm sorry it wasn't delivered to your door. Who was the carrier for this delivery? ^AF
@@ -1493,7 +1493,7 @@ Customer: @AmazonHelp I know once product is sold then  customer should by runni
 
 Customer: @AmazonHelp I am expecting little favor even buying expensive then the existing one... It called relationship among us
 
-AmazonHelp: @182816 I'm sorry for the hassle. However, we cannot accept remorse returns. ^HN",exchange_offer_inquiry,escalate,Product upgrade/exchange requires specific order identification.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+AmazonHelp: @182816 I'm sorry for the hassle. However, we cannot accept remorse returns. ^HN",exchange_offer_inquiry,auto_handle,The customer asks whether an unused product can be upgraded or exchanged.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 2310488,"Emily, you’re half an hour late and you’ve been sitting in Lynnwood for like an hour, what you doin girl. @117795 https://t.co/aW4cnznDd7","@589611 I'm so sorry for the wait. If you have a moment, please contact us here: https://t.co/mpns8Hctmq so we can look into this with you. ^LH","Customer: Emily, you’re half an hour late and you’ve been sitting in Lynnwood for like an hour, what you doin girl. @117795 https://t.co/aW4cnznDd7
 
 AmazonHelp: @589611 I'm so sorry for the wait. If you have a moment, please contact us here: https://t.co/mpns8Hctmq so we can look into this with you. ^LH
@@ -1663,7 +1663,7 @@ Customer: @AmazonHelp My orders are fine. I also still have access to you by way
 
 Customer: @AmazonHelp As far as The gloves made from HUMAN SKIN from THE HANNIBAL HOWES CLOTHING LINE. I'm sure they're selling fine. Who else but YOU &amp; HH would
 
-Customer: @AmazonHelp sell them.  ;)",product_availability,escalate,Customer refers to specific pending orders requiring lookup.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
+Customer: @AmazonHelp sell them.  ;)",product_availability,auto_handle,The initial message asks whether a specific product is selling/available.,,5ac4a4573d57926c5e403f86a69d0619cb5c0e569b4ba0c1e4345c15d160dac5
 879208,@AmazonHelp @115821 what about Amazon prime Kannada movies.. #wewantkannadamovies #amazonprime,@328725 Regional content is an integral part of our content in India. ^SM (1/2),"Customer: @AmazonHelp @115821 what about Amazon prime Kannada movies.. #wewantkannadamovies #amazonprime
 
 AmazonHelp: @328725 Regional content is an integral part of our content in India. ^SM (1/2)

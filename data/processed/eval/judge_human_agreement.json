@@ -1,0 +1,35 @@
+{
+  "n_overlap": 54,
+  "metrics": {
+    "correctness": {
+      "spearman": 0.5369265696827804,
+      "quadratic_kappa": 0.6553191489361703,
+      "mae": 0.16666666666666666
+    },
+    "groundedness": {
+      "spearman": 0.8250595932884062,
+      "quadratic_kappa": 0.9323308270676691,
+      "mae": 0.18518518518518517
+    },
+    "resolution_appropriateness": {
+      "spearman": 0.8625664623179471,
+      "quadratic_kappa": 0.9055393586005831,
+      "mae": 0.1111111111111111
+    },
+    "completeness": {
+      "spearman": 0.6126329642911571,
+      "quadratic_kappa": 0.7102439024390244,
+      "mae": 0.16666666666666666
+    },
+    "communication_quality": {
+      "spearman": 0.28812994971805395,
+      "quadratic_kappa": 0.1533101045296167,
+      "mae": 0.16666666666666666
+    },
+    "overall": {
+      "spearman": 0.6910807223499287,
+      "quadratic_kappa": 0.8038740920096852,
+      "mae": 0.16666666666666666
+    }
+  }
+}

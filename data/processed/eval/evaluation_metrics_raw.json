@@ -6022,10 +6022,10 @@
   },
   "system_action": {
     "auto_handle_coverage": 0.055,
-    "unsafe_auto_handle_rate": 0.0,
-    "unsafe_auto_handle_rate_given_auto": 0.0,
-    "escalation_recall": 1.0,
-    "auto_handle_precision": 1.0
+    "unsafe_auto_handle_rate": 0.01,
+    "unsafe_auto_handle_rate_given_auto": 0.18181818181818182,
+    "escalation_recall": 0.9863013698630136,
+    "auto_handle_precision": 0.8181818181818182
   },
   "always_escalate_baseline": {
     "auto_handle_coverage": 0.0,

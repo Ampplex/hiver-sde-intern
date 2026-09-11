@@ -44,7 +44,7 @@ def apply_safety_policy(
     min_evidence_cases = int(
         min_evidence_cases
         if min_evidence_cases is not None
-        else os.getenv("MIN_STRONG_EVIDENCE_CASES", "2")
+        else os.getenv("MIN_STRONG_EVIDENCE_CASES", "1")
     )
     intent = classification.get("intent_id")
 
