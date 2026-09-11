@@ -114,8 +114,8 @@ flowchart TD
 
 ```bash
 # Clone and enter the repository
-git clone <repo-url>
-cd hiver-sde-intern
+git clone https://github.com/Ampplex/resolve-agent.git
+cd resolve-agent
 
 # Create and activate a virtual environment
 python3 -m venv .venv
@@ -202,7 +202,7 @@ Below are three live runs demonstrating the system's decision-making across dist
 ## Project Structure
 
 ```text
-hiver-sde-intern/
+resolve-agent/
 ├── README.md                                # System overview, architecture, reproduction guide
 ├── REPORT.md                                # Comprehensive technical evaluation report
 ├── DECISION_LOG.md                          # 14 non-obvious engineering decisions & rationale
