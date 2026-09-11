@@ -37,7 +37,7 @@ class IntentClassifier:
 
     def predict(self, text, threshold=None, margin=None):
         threshold = float(threshold if threshold is not None else os.getenv("INTENT_SIMILARITY_THRESHOLD", "0.45"))
-        margin_threshold = float(margin if margin is not None else os.getenv("INTENT_MARGIN_THRESHOLD", "0.05"))
+        margin_threshold = float(margin if margin is not None else os.getenv("INTENT_MARGIN_THRESHOLD", "0.02"))
         embedding = self.embed(text)
         sims = self.prototypes @ embedding
         order = np.argsort(-sims)

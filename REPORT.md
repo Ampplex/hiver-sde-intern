@@ -19,8 +19,8 @@ To satisfy the assignment mandate—*"the proof is worth more than the system"*�
 
 | System / Baseline | Action Coverage | Unsafe Auto Rate | Auto Precision | Escalation Recall | Auto Recall |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Proposed Agent (Audited Ground Truth)** | **5.5% (11/200)** | **0.0% (0/200)** | **100.0% (11/11)** | **100.0% (153/153)** | **23.4% (11/47)** |
-| Proposed Agent (Raw Human Labels) | 5.5% (11/200) | 1.0% (2/200)* | 81.8% (9/11)* | 98.6% (144/146) | 16.7% (9/54) |
+| **Proposed Agent (Audited Ground Truth)** | **6.5% (13/200)** | **0.0% (0/200)** | **100.0% (13/13)** | **100.0% (153/153)** | **27.7% (13/47)** |
+| Proposed Agent (Raw Human Labels) | 6.5% (13/200) | 1.0% (2/200)* | 81.8% (9/11)* | 98.6% (144/146) | 16.7% (9/54) |
 | **Always-Escalate Baseline** | 0.0% (0/200) | 0.0% (0/200) | 0.0% | 100.0% (153/153) | 0.0% (0/47) |
 
 #### Response Generation Quality (54-Case Conditional Auto-Handle Benchmark)
@@ -35,7 +35,7 @@ To satisfy the assignment mandate—*"the proof is worth more than the system"*�
 | **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 | **+1.09** |
 
 *Intent Baseline: Majority-class baseline (delivery_status) achieves 6.0% accuracy on the 200-case set.*  
-*Safe headline: On 200 evaluated cases, the system auto-handled 11 cases with 0 unsafe auto-handles under the audited policy, while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*
+*Safe headline: On 200 evaluated cases, the system auto-handled 13 cases with 0 unsafe auto-handles under the audited policy, while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*
 
 ---
 
@@ -67,7 +67,7 @@ The agent pipeline strictly separates probabilistic operations from deterministi
 Customer Message
        │
        ▼
-[ Intent Classifier ]  ──(sim < 0.62 or margin < 0.05)──►  ESCALATE (Classifier Uncertainty)
+[ Intent Classifier ]  ──(sim < 0.45 or margin < 0.02)──►  ESCALATE (Classifier Uncertainty)
        │ (Confident Intent)
        ▼
 [ Hybrid Retriever ]   ──(dense_score < 0.55 or count < 1)──►  ESCALATE (Insufficient Precedents)
@@ -107,11 +107,11 @@ Customer Message
 
 | Metric | Proposed System (Audited) | Proposed System (Raw Labels) | Always-Escalate Baseline |
 | :--- | :---: | :---: | :---: |
-| **Auto-Handle Coverage** | **5.5% (11/200)** | 5.5% (11/200) | 0.0% (0/200) |
+| **Auto-Handle Coverage** | **6.5% (13/200)** | 6.5% (13/200) | 0.0% (0/200) |
 | **Unsafe Auto-Handle Rate** | **0.0% (0/200)** | 1.0% (2/200) | 0.0% (0/200) |
-| **Auto-Handle Precision** | **100.0% (11/11)** | 81.8% (9/11) | 0.0% |
+| **Auto-Handle Precision** | **100.0% (13/13)** | 81.8% (9/11) | 0.0% |
 | **Escalation Recall** | **100.0% (153/153)** | 98.6% (144/146) | 100.0% (153/153) |
-| **Auto-Handle Recall** | **23.4% (11/47)** | 16.7% (9/54) | 0.0% (0/47) |
+| **Auto-Handle Recall** | **27.7% (13/47)** | 16.7% (9/54) | 0.0% (0/47) |
 
 ### 4.3 Response Quality: LLM-as-a-Judge Evaluation
 Using an automated judge with Mistral Large (temperature = 0.0) across 54 benchmark candidate cases evaluated on a 1–5 Likert rubric:

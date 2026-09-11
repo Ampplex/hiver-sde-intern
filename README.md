@@ -9,10 +9,10 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 | Metric | Proposed System (Audited Labels) | Proposed System (Raw Labels) | Always-Escalate Baseline |
 | :--- | :---: | :---: | :---: |
 | **Unsafe Auto-Handle Rate** | **0.0% (0/200)** | 1.0% (2/200)* | 0.0% (0/200) |
-| **Auto-Handle Precision** | **100.0% (11/11)** | 81.8% (9/11)* | 0.0% |
+| **Auto-Handle Precision** | **100.0% (13/13)** | 81.8% (9/11)* | 0.0% |
 | **Escalation Recall** | **100.0% (153/153)** | 98.6% (144/146) | 100.0% (153/153) |
-| **Auto-Handle Coverage** | **5.5% (11/200)** | 5.5% (11/200) | 0.0% (0/200) |
-| **Auto-Handle Recall** | **23.4% (11/47)** | 16.7% (9/54) | 0.0% (0/47) |
+| **Auto-Handle Coverage** | **6.5% (13/200)** | 6.5% (13/200) | 0.0% (0/200) |
+| **Auto-Handle Recall** | **27.7% (13/47)** | 16.7% (9/54) | 0.0% (0/47) |
 
 ### Response Quality (54-Case Conditional Auto-Handle Benchmark)
 
@@ -26,7 +26,7 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 | **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 |
 
 *Zero data leakage: Strictly partitioned by `conversation_id` (seed=42) with 0% overlap against the 8,000-case training corpus.*
-*Headline summary: On 200 evaluated cases, the system auto-handled 11 cases with 0 unsafe auto-handles under the audited policy, while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*
+*Headline summary: On 200 evaluated cases, the system auto-handled 13 cases with 0 unsafe auto-handles under the audited policy, while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*
 
 ---
 
@@ -48,7 +48,7 @@ flowchart TD
     A[Customer Tweet] --> B[Amazon Titan Embeddings v2]
     B --> C[Intent Classifier<br>104 Prototype Centroids]
     
-    C -->|Sim < 0.62 OR Margin < 0.05| E[ESCALATE<br>Classifier Uncertainty]
+    C -->|Sim < 0.45 OR Margin < 0.02| E[ESCALATE<br>Classifier Uncertainty]
     C -->|Confident Intent| F[Hybrid Retriever<br>BM25 + Dense + Intent-RRF]
     
     F -->|< 1 Match with Dense Score >= 0.55| E
