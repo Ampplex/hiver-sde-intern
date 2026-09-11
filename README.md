@@ -37,7 +37,7 @@ Beyond individual examples, our automated evaluation harness measures end-to-end
 
 Scored on a 1–5 rubric across 6 dimensions against a simple BM25 retrieval baseline:
 
-| Quality Dimension (1–5) | Proposed Agent (Hybrid Retrieval + Mistral Large) | Simple Baseline (BM25 Top-1 Reply) | Verdict |
+| Quality Dimension (1–5) | Proposed Pipeline | Simple Baseline (BM25 Top-1 Reply) | Verdict |
 | :--- | :---: | :---: | :--- |
 | **Correctness** | **4.87 / 5.00** | 2.38 / 5.00 | Generated responses accurately address the customer's stated problem. |
 | **Resolution Appropriateness** | **4.68 / 5.00** | 2.40 / 5.00 | Responses generally follow demonstrated historical resolution patterns. |
