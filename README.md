@@ -18,15 +18,15 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 
 | Quality Dimension (1–5) | Proposed System (RAG + Mistral Large) | Simple Baseline (BM25 Top-1 Historical Reply) |
 | :--- | :---: | :---: |
-| **Overall Quality** | **4.72 / 5.00** | 2.43 / 5.00 |
-| **Correctness** | **4.89 / 5.00** | 2.43 / 5.00 |
-| **Groundedness** | **4.44 / 5.00** | 2.44 / 5.00 |
-| **Resolution Appropriateness** | **4.69 / 5.00** | 2.44 / 5.00 |
-| **Completeness** | **4.85 / 5.00** | 2.43 / 5.00 |
-| **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 |
+| **Overall Quality** | **4.72 / 5.00** | 2.38 / 5.00 |
+| **Correctness** | **4.87 / 5.00** | 2.38 / 5.00 |
+| **Groundedness** | **4.45 / 5.00** | 2.40 / 5.00 |
+| **Resolution Appropriateness** | **4.68 / 5.00** | 2.40 / 5.00 |
+| **Completeness** | **4.83 / 5.00** | 2.38 / 5.00 |
+| **Communication Quality** | **4.98 / 5.00** | 3.81 / 5.00 |
 
 *Zero data leakage: Strictly partitioned by `conversation_id` (seed=42) with 0% overlap against the 8,000-case training corpus.*
-*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). In a separate conditional response-quality benchmark on the 47 audited gold-auto cases, it achieved 4.72/5 versus 2.38/5 for direct BM25 retrieval.*
+*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). On a separate 47-case conditional response-quality benchmark, it achieved 4.72/5 overall quality versus 2.38/5 for direct BM25 retrieval.*
 *Caveat: Coverage is intentionally conservative and dataset-dependent; it should not be interpreted as a production automation rate. Evaluation labels were manually audited with AI assistance.*
 
 ---
