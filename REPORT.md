@@ -15,7 +15,7 @@ To satisfy the assignment mandateâ€”*"the proof is worth more than the system"*â
 
 ### Headline Results
 
-#### Action Triage Performance (200-Case Evaluation Set)
+#### Action Triage Performance (200-Case Evaluation Set; 76.5% Escalate / 23.5% Auto-Handle)
 
 | System / Baseline | Action Coverage | Unsafe Auto Rate | Auto Precision | Escalation Recall | Auto Recall |
 | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -34,6 +34,7 @@ To satisfy the assignment mandateâ€”*"the proof is worth more than the system"*â
 | **Completeness** | **4.83 / 5.00** | 2.38 / 5.00 | **+2.45** |
 | **Communication Quality** | **4.98 / 5.00** | 3.81 / 5.00 | **+1.17** |
 
+*Action-label distribution: 47/200 (23.5%) auto-handle and 153/200 (76.5%) escalate. The benchmark is materially class-imbalanced toward escalation.*  
 *Intent Baseline: Majority-class baseline (delivery_status) achieves 6.0% accuracy on the 200-case set.*  
 *Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). On a separate 47-case conditional response-quality benchmark, it achieved 4.72/5 overall quality versus 2.38/5 for direct BM25 retrieval.*  
 *Design Principle & Caveat: We deliberately optimize for safe automation rather than maximum coverage: false auto-handles are treated as substantially more costly than unnecessary escalations. Coverage is 6.5% (13/200): among 47 audited cases labeled safe to auto-handle, the system autonomously handled 13 and escalated 34. The response-quality benchmark (4.72/5.00) is a conditional evaluation on safe cases, strictly separate from the 200-case end-to-end action decision.*
@@ -131,7 +132,22 @@ To prove the core assignment requirement that the system classifies, grounds rep
 ### 4.1 Golden Evaluation Set & Leakage-Controlled Partitioning
 * **Size:** 200 conversations sampled from the Twitter Customer Support dataset.
 * **Partitioning:** Strictly partitioned at the conversation_id boundary (seed = 42). Zero conversation IDs overlap between the 8,000-case training corpus and the 200-case evaluation set (verified by scripts/verify_submission_artifacts.py).
-* **Ground Truth Composition:** 47 cases genuine auto_handle (23.5%), 153 cases escalate (76.5%) under audited expert review.
+* **Ground Truth Composition:** 47 cases were labeled auto_handle (23.5%) and 153 cases escalate (76.5%) under the audited labeling protocol.
+
+### 4.1.1 Action-Label Distribution and Class Imbalance
+
+The evaluation set is intentionally evaluated as a safety-triage problem under realistic operational conditions, resulting in substantial class imbalance:
+
+| Action Label | Cases | Share | Operational Definition |
+| :--- | :---: | :---: | :--- |
+| **Escalate** | 153 | 76.5% | Inquiry requires customer verification, private account state, or specialized human action. |
+| **Auto-Handle** | 47 | 23.5% | Inquiry is public, informational, and resolvable via established public guidance. |
+| **Total** | **200** | **100.0%** | Full audited evaluation set. |
+
+Because escalation is **3.26Ã— as prevalent** as auto-handle in the evaluation cohort:
+1. **Always-Escalate Trivially Achieves High Recall:** An Always-Escalate policy achieves 100.0% escalation recall (153/153) while providing 0.0% coverage and 0.0% auto-handle recall. Escalation recall alone is therefore insufficient without measuring automation recovery.
+2. **True Automation Recall on Minority Class:** The proposed pipeline achieves 100.0% escalation recall while recovering **27.7% of safe auto cases (13/47)** with 100.0% precision (13/13) and 0.0% unsafe auto-handles.
+3. **Multi-Metric Integrity:** Overall classification accuracy or macro metrics in an imbalanced regime can obscure unsafe automation. We prioritize zero unsafe actions and high auto precision over maximizing raw volume on the minority class.
 
 ### 4.2 Action Triage Performance
 
@@ -244,6 +260,8 @@ Our post-hoc audit revealed that Amazon's actual Twitter responses for both case
 Achieving zero unsafe actions is trivial if an agent never acts (as demonstrated by the Always-Escalate baseline). Our agent auto-handles **13 out of 200 cases** (6.5% coverage): among the **47 audited cases labeled safe to auto-handle**, the system autonomously handled 13 and escalated 34.
 
 **Deliberate Safety Optimization:** We deliberately optimize for safe automation rather than maximum coverage: false auto-handles are treated as substantially more costly than unnecessary escalations. When intent similarity is borderline ($< 0.45$), sibling margins are narrow ($< 0.02$), or historical evidence is insufficient ($< 1$ strong precedent $\ge 0.55$), the system abstains and escalates rather than forcing an uncertain decision.
+
+Because only 23.5% of the audited set is labeled auto-handle, overall automation coverage should not be interpreted as the classifier's general accuracy. The relevant question is how much of the minority auto-handle class can be recovered without introducing unsafe automation.
 
 Furthermore, **6.5% is an observed rate on this specific 200-case sample, not a universal production automation guarantee.** Claiming the automation problem is "solved" would be entirely false when nearly three-quarters of automatable inquiries (34 / 47) are still escalated to protect customer safety.
 

@@ -22,7 +22,7 @@ This repository satisfies all 5 core deliverables specified in the **SDE Intern 
 
 The automated evaluation harness measures end-to-end triage performance on the full 200-case audited evaluation set. A separate LLM-as-a-judge benchmark evaluates response quality on the 47 cases labeled safe to auto-handle.
 
-### A. Triage Correctness (Decision Safety)
+### A. Triage Correctness (Decision Safety across 200 Cases: 76.5% Escalate / 23.5% Auto-Handle)
 
 | Evaluation Metric | Measured Value | What It Proves |
 | :--- | :---: | :--- |
