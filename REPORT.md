@@ -217,7 +217,7 @@ Achieving zero unsafe actions is trivial if an agent never acts (as demonstrated
 Furthermore, **6.5% is an observed rate on this specific 200-case sample, not a universal production automation guarantee.** Claiming the automation problem is "solved" would be entirely false when nearly three-quarters of automatable inquiries are still escalated to protect customer safety.
 
 ### 3. Response Quality Scores (4.72/5.0) Are Conditioned on a Screened Benchmark Cohort
-The high LLM-as-a-judge score (4.72/5.0) was evaluated on a benchmark cohort of 54 candidate cases where human annotators verified that the customer problem was informational and safe to automate. This tests the *conditional capability* of the RAG pipeline given a safe query. It does **not** mean the generator would achieve a 4.72 quality score on messy, adversarial account-specific queries if the safety gates were removed.
+The high LLM-as-a-judge score (4.72/5.0) was evaluated on a benchmark cohort of 47 audited auto-handle cases where it was verified that the customer problem was informational and safe to automate. This tests the *conditional capability* of the RAG pipeline given a safe query. It does **not** mean the generator would achieve a 4.72 quality score on messy, adversarial account-specific queries if the safety gates were removed.
 
 ### 4. Dual-LLM Inference Latency and Cost
 In our current pipeline, every candidate case that passes retrieval executes **two sequential LLM inference calls**:

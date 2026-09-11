@@ -34,7 +34,7 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 ## Deliverables Index
 
 * 📄 **[Technical Evaluation Report](REPORT.md)**: Full 6-page report covering problem framing, results vs baselines, failure modes, the mandatory *"What is misleading about my headline number?"* section, and future roadmap.
-* 📋 **[Engineering Decision Log](DECISION_LOG.md)**: Plain list of 12 non-obvious engineering decisions and their architectural rationale.
+* 📋 **[Engineering Decision Log](DECISION_LOG.md)**: Plain list of 14 non-obvious engineering decisions and their architectural rationale.
 * 🏷️ **[Golden Evaluation Set](data/processed/eval/golden_labels_manual.csv)**: 200 evaluation examples with golden intents, actions, and justifications, manually audited with AI assistance.
 * ⚖️ **[Judge Evaluation & Human Agreement](data/processed/eval/judge_human_agreement.json)**: Automated LLM-as-a-judge scores and human concordance analysis.
 
