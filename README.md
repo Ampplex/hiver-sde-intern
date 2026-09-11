@@ -155,7 +155,6 @@ hiver-sde-intern/
 ├── .env.example                             # Template environment configuration (Bedrock credentials)
 ├── run_quick_reproduction.sh                # End-to-end headline reproduction script (<15 min)
 ├── run_full_rebuild.sh                      # Full from-scratch rebuild script (offline discovery)
-├── run_pipeline.sh                          # Pipeline reproduction script
 ├── data/
 │   └── processed/
 │       ├── classifier/                      # 104 prototype centroids & intent taxonomy metadata
