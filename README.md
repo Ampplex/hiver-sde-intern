@@ -26,7 +26,7 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 | **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 |
 
 *Zero data leakage: Strictly partitioned by `conversation_id` (seed=42) with 0% overlap against the 8,000-case training corpus.*
-*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall, while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*
+*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). In a separate conditional response-quality benchmark on the original 54 gold-auto cases, it achieved 4.72/5 versus 2.43/5 for direct BM25 retrieval (4.71/5 on the audited subset).*
 *Caveat: Coverage is intentionally conservative and dataset-dependent; it should not be interpreted as a production automation rate. Evaluation labels were manually audited with AI assistance.*
 
 ---

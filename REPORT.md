@@ -35,7 +35,7 @@ To satisfy the assignment mandateâ€”*"the proof is worth more than the system"*â
 | **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 | **+1.09** |
 
 *Intent Baseline: Majority-class baseline (delivery_status) achieves 6.0% accuracy on the 200-case set.*  
-*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153), while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*  
+*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). In a separate conditional response-quality benchmark on the original 54 gold-auto cases, it achieved 4.72/5 versus 2.43/5 for direct BM25 retrieval (4.71/5 across the audited subset).*  
 *Caveat: Coverage is intentionally conservative and dataset-dependent; it should not be interpreted as a production automation rate.*
 
 ---
