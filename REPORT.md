@@ -207,7 +207,7 @@ In our current pipeline, every candidate case that passes retrieval executes **t
 1. `ResponseGenerator` (Mistral Large) to draft the grounded reply.
 2. `CapabilityGuard` (Mistral Large) to audit the semantic resolution boundary.
 
-While this dual-LLM architecture provides rock-solid safety, it doubles inference cost and adds 1.5–3.0 seconds of latency per candidate message. In high-throughput production (thousands of tweets/minute), this architecture would require caching or distillation into a single structured pass.
+While this dual-LLM architecture provides rigorous semantic safety gating, it doubles inference cost and adds 1.5–3.0 seconds of latency per candidate message. In high-throughput production (thousands of tweets/minute), this architecture would require caching or distillation into a single structured pass.
 
 ### 5. Historical Dataset Artifacts (2017 Twitter)
 The underlying Twitter Customer Support dataset dates from late 2017. Certain historical URLs, service names, and policy specifics (e.g., Prime video game benefits) are dated. Furthermore, public Twitter support operates under 280-character constraints that encourage short links over comprehensive self-service portals. Deploying this system today would require indexing modern help documentation and omnichannel knowledge bases.
