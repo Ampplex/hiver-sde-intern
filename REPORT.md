@@ -36,7 +36,7 @@ To satisfy the assignment mandateâ€”*"the proof is worth more than the system"*â
 
 *Intent Baseline: Majority-class baseline (delivery_status) achieves 6.0% accuracy on the 200-case set.*  
 *Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). On a separate 47-case conditional response-quality benchmark, it achieved 4.72/5 overall quality versus 2.38/5 for direct BM25 retrieval.*  
-*Caveat: Coverage is intentionally conservative and dataset-dependent; it should not be interpreted as a production automation rate.*
+*Design Principle & Caveat: We deliberately optimize for safe automation rather than maximum coverage: false auto-handles are treated as substantially more costly than unnecessary escalations. Coverage is 6.5% (13/200): among 47 audited cases labeled safe to auto-handle, the system autonomously handled 13 and escalated 34. The response-quality benchmark (4.72/5.00) is a conditional evaluation on safe cases, strictly separate from the 200-case end-to-end action decision.*
 
 ---
 
@@ -161,7 +161,7 @@ Using an automated judge with Mistral Large (temperature = 0.0) across the 47 au
 | **Communication Quality** | **4.98** | 3.81 | +1.17 |
 | **Overall Quality** | **4.72** | **2.38** | **+2.34** |
 
-The simple baseline frequently returns verbatim historical replies intended for other users (referencing incorrect names, specific tracking IDs, or irrelevant orders), leading to an overall score of 2.38. In contrast, the proposed RAG pipeline synthesizes grounded, professional, and tailored responses scoring 4.72.
+The simple baseline frequently returns verbatim historical replies intended for other users (referencing incorrect names, specific tracking IDs, or irrelevant orders), leading to an overall score of 2.38. In contrast, the proposed RAG pipeline synthesizes responses that are grounded in retrieved historical AmazonHelp evidence, accurately address the customer's stated problem, and generally follow demonstrated historical resolution patterns rather than unsupported deflection, achieving an overall score of 4.72 (+2.34 improvement).
 
 ### 4.4 Human-Judge Agreement Analysis
 To validate judge trustworthiness (Deliverable 3), we scored the benchmark cases with human expert evaluators across all 6 dimensions. Agreement was computed using Spearman's rank correlation (rho), Quadratic Weighted Cohen's Kappa (kappa), and Mean Absolute Error (MAE):
@@ -247,9 +247,11 @@ Our post-hoc audit revealed that Amazon's actual Twitter responses for both case
 **Crucial Caveat:** These 200 action labels were manually audited with AI assistance rather than produced through independent, multi-annotator blind adjudication. Quoting "100% precision" or "100% escalation recall" as an absolute production certainty would be misleading; they reflect performance against our vetted audited benchmark.
 
 ### 2. "Zero Unsafe Autos" is Facilitated by Very Low Coverage (6.5%)
-Achieving zero unsafe actions is trivial if an agent never acts (as demonstrated by the Always-Escalate baseline). Our agent auto-handles **13 out of 200 cases** (6.5% coverage). While this represents a solid recovery from the initial 2.0% baseline, the agent remains heavily conservative: **34 safe auto-handle opportunities (72.3% of safe cases) were escalated to humans.**
+Achieving zero unsafe actions is trivial if an agent never acts (as demonstrated by the Always-Escalate baseline). Our agent auto-handles **13 out of 200 cases** (6.5% coverage): among the **47 audited cases labeled safe to auto-handle**, the system autonomously handled 13 and escalated 34.
 
-Furthermore, **6.5% is an observed rate on this specific 200-case sample, not a universal production automation guarantee.** Claiming the automation problem is "solved" would be entirely false when nearly three-quarters of automatable inquiries are still escalated to protect customer safety.
+**Deliberate Safety Optimization:** We deliberately optimize for safe automation rather than maximum coverage: false auto-handles are treated as substantially more costly than unnecessary escalations. When intent similarity is borderline ($< 0.45$), sibling margins are narrow ($< 0.02$), or historical evidence is insufficient ($< 1$ strong precedent $\ge 0.55$), the system abstains and escalates rather than forcing an uncertain decision.
+
+Furthermore, **6.5% is an observed rate on this specific 200-case sample, not a universal production automation guarantee.** Claiming the automation problem is "solved" would be entirely false when nearly three-quarters of automatable inquiries (34 / 47) are still escalated to protect customer safety.
 
 ### 3. Response Quality Scores (4.72/5.0) Are Conditioned on a Screened Benchmark Cohort
 The high LLM-as-a-judge score (4.72/5.0) was evaluated on a benchmark cohort of 47 audited auto-handle cases where it was verified that the customer problem was informational and safe to automate. This tests the *conditional capability* of the RAG pipeline given a safe query. It does **not** mean the generator would achieve a 4.72 quality score on messy, adversarial account-specific queries if the safety gates were removed.
