@@ -6,7 +6,7 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 
 ## Assignment Deliverables Index
 
-This repository satisfies all 5 core deliverables specified in the **Hiver SDE Intern Take-Home Assignment**:
+This repository satisfies all 5 core deliverables specified in the assignment:
 
 | Deliverable | Requirement | Location / Artifact |
 | :--- | :--- | :--- |
@@ -29,7 +29,7 @@ Beyond individual examples, our automated evaluation harness measures end-to-end
 | **Unsafe Auto-Handle Rate** | **0.0% (0 / 200)** | No case labeled as requiring escalation was auto-handled by the evaluated system. |
 | **Auto-Handle Precision** | **100.0% (13 / 13)** | Every case the system auto-handled matched the audited safe-to-automate label. |
 | **Escalation Recall** | **100.0% (153 / 153)** | Every case labeled as requiring escalation was escalated. |
-| **Auto-Handle Coverage** | **6.5% (13 / 200)** | 13 autonomous resolutions out of 200 cases (conservative operating point). |
+| **Auto-Handle Coverage** | **6.5% (13 / 200)** | 13 auto-handled cases out of 200 (conservative operating point). |
 | **Auto-Handle Recall** | **27.7% (13 / 47)** | 13 of 47 audited safe cases automated; remaining 34 safely escalated. |
 | **Intent Classifier Abstention** | **34.5% (69 / 200)** | Abstains when cosine similarity $< 0.45$ or margin $< 0.02$. |
 
@@ -54,7 +54,7 @@ The agent is designed to be safe first, autonomous second.
 * **Design Principle:** We deliberately optimize for safe automation rather than maximum coverage: false auto-handles are treated as substantially more costly than unnecessary escalations.
 * **Abstention Policy:** When intent similarity is borderline ($<0.45$), sibling margin is narrow ($<0.02$), or historical evidence is insufficient ($<1$ strong precedent $\ge 0.55$), the system abstains and escalates rather than forcing an uncertain decision.
 * **Benchmark Independence:** The response-quality benchmark (4.72/5.00) is conditional on audited safe-to-automate cases ($N=47$) and is strictly separate from the 200-case end-to-end triage decision.
-* **Data Partitioning:** Zero data leakage; strictly partitioned by `conversation_id` (`seed=42`) with 0% overlap against the 8,000-case training corpus. Evaluation labels were manually audited with AI assistance.
+* **Data Partitioning:** Zero conversation-level overlap between the 200-case evaluation set and the 8,000-case training corpus; partitioned by `conversation_id` (`seed=42`). Evaluation labels were manually audited with AI assistance.
 
 ---
 
@@ -68,7 +68,7 @@ flowchart TD
     B --> C[Intent Classifier<br>104 Prototype Centroids]
     
     C -->|Sim < 0.45 OR Margin < 0.02| E[ESCALATE<br>Classifier Uncertainty]
-    C -->|Confident Intent| F[Hybrid Retriever<br>BM25 + Dense + Intent-RRF]
+    C -->|Confident Intent| F[Hard Intent Filter<br>BM25 + Dense + RRF]
     
     F -->|< 1 Match with Dense Score >= 0.55| E
     F -->|Historical Cases| G[Response Generator<br>Mistral Large Grounding]
@@ -91,12 +91,12 @@ flowchart TD
 
 2. **Intent-Aware Hybrid Retrieval**:
    - The predicted intent serves as a **hard candidate filter before ranking** to prune operationally unrelated cases.
-   - Candidates are ranked via BM25 lexical search and Titan Dense cosine similarity, fused via Reciprocal Rank Fusion (RRF).
+   - Filtered candidates are ranked via BM25 lexical search and Titan Dense cosine similarity, fused via Reciprocal Rank Fusion (RRF).
    - **Evidence Gate**: Requires $\ge 1$ strong historical precedent with `dense_score >= 0.55`.
 
 3. **Grounded Response Generation (Asymmetric Trust)**:
    - Retrieved historical cases are injected into Mistral Large (2407 via Bedrock).
-   - The prompt enforces an asymmetric trust boundary: historical customer text is untrusted problem description; only AmazonHelp responses represent verified brand resolution patterns.
+   - The prompt enforces an asymmetric trust boundary: historical customer text is untrusted problem description; only AmazonHelp responses are treated as evidence of demonstrated historical resolution patterns.
 
 4. **Semantic Safety via LLM CapabilityGuard**:
    - Rather than brittle regexes, a dedicated Mistral Large call inspects the draft reply against the customer inquiry.
@@ -130,7 +130,7 @@ cp .env.example .env
 
 ### 2. Instant Artifact Verification (< 1 Second)
 
-Validate the 104-intent taxonomy, sha256 hash match, 8,000 training case coverage, 200 golden evaluation cases, zero train/eval leakage, and view the headline metrics summary:
+Validate the 104-intent taxonomy, SHA-256 hash, 8,000 training-case coverage, 200 golden evaluation cases, and zero conversation-level train/eval overlap:
 
 ```bash
 python scripts/verify_submission_artifacts.py
@@ -138,7 +138,7 @@ python scripts/verify_submission_artifacts.py
 
 ### 3. Full Headline Reproduction Pipeline (< 15 Seconds with Checkpoints / < 15 Min Live)
 
-Reproduces all headline metrics across retrieval build, classifier centroids, component smoke tests, 200-case evaluation, 47-case LLM judge quality benchmark, and human–judge agreement:
+Reproduces the evaluation pipeline across retrieval build, classifier centroids, component smoke tests, the 200-case triage evaluation, the 47-case conditional LLM-judge benchmark, and human–judge agreement. Cached checkpoints allow the headline run to complete quickly.
 
 ```bash
 bash run_quick_reproduction.sh
