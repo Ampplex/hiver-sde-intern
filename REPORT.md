@@ -97,11 +97,11 @@ Customer Message
 
 ### 3.1 Live Decision-Making Traces Across Distinct Scenarios
 
-To prove the core assignment requirement that the system classifies, grounds replies, and decides auto-handle vs. escalate with a stated operational reason, the pipeline exhibits four distinct operational trajectories:
+To prove the core assignment requirement that the system classifies, grounds replies, and decides auto-handle vs. escalate with a stated operational reason, the pipeline exhibits three primary decision-making trajectories:
 
 * **Scenario 1: Safe Public Informational Query (`AUTO_HANDLE`)**
   * *Customer Tweet:* `@AmazonHelp is it possible to give Amazon Prime membership as a gift in the U.K.?`
-  * *Classification:* `prime_subscription_query` (Top-1 sim: $0.5171 > 0.45$, margin: $0.0219 > 0.02$).
+  * *Classification:* `prime_subscription_query` (Top-1 sim: $0.5171 > 0.45$, margin: $0.0219 > 0.02$). Both similarity and margin thresholds are satisfied.
   * *Retrieval & Generation:* Retrieved Case 2166047 (`dense = 0.8550`, `bm25 = 16.31`); generator recommended `auto_handle`.
   * *CapabilityGuard:* Approved `auto_handle` (*"Provides a direct and complete answer using only public information."*).
   * *Final Action & Stated Reason:* **`AUTO_HANDLE`** — *"Consistent with historical responses for similar queries."*
@@ -122,13 +122,6 @@ To prove the core assignment requirement that the system classifies, grounds rep
   * *CapabilityGuard:* Approved `auto_handle` (*"Provides general public guidance and does not require accessing private account data."*).
   * *Final Action & Stated Reason:* **`AUTO_HANDLE`** — *"Consistent with the pattern of responses for similar cases."*
   * *Draft Reply:* *"@Customer Thank you for bringing this to our attention! We would never request personal information via Twitter. Please do not provide any account details. If you receive more suspicious emails, you can report them directly via: https://t.co/ScIX65iVYc. Thank you! ^NV"*
-
-* **Scenario 4: Conversational Out-of-Distribution Query (`ESCALATE` via Classifier Abstention)**
-  * *Customer Tweet:* `Thanks for the quick delivery! Keep up the great work.`
-  * *Classification:* **`uncertain`** (Top-1 sim: $0.3756 < 0.45$ confidence threshold, margin: 0.0461).
-  * *Retrieval & Generation:* Safely bypassed due to low classifier confidence.
-  * *Final Action & Stated Reason:* **`ESCALATE`** — *"Classifier uncertainty."*
-  * *Significance:* Proves fail-closed safety: low-similarity queries are routed to humans rather than forcing an inaccurate intent.
 
 ---
 
@@ -220,13 +213,13 @@ Detailed breakdown of the primary failure modes with concrete conversation examp
   * *CapabilityGuard Decision:* `escalate` — *"Providing a link for order-specific feedback requires customer-specific state and initiation of a human support workflow."*
   * *Root Cause:* Historical brand behavior relied on webform redirection; the guard strictly prohibits treating form handoffs as autonomous resolutions.
 
-### Mode 4: Colloquial Phrasing and Multi-Aspect Tail Inquiries (69 cases)
-* **Mechanism:** Customer queries utilizing heavy slang, indirect sarcasm, or unconventional grammar deviate from the averaged semantic centroid of the intent prototypes.
+### Mode 4: Classifier Abstention on Low-Information and Conversational Messages (69 cases)
+* **Mechanism:** The classifier conservatively escalates benign conversational messages, heavy slang, or indirect commentary when their embedding similarity falls below the operating threshold (0.45) or margin falls below 0.02. This favors safety over forced intent assignment, but reduces automation coverage and represents a target for future classifier calibration.
 * **Concrete Example (Case 559857):**
   * *Customer Tweet:* `"@115833 For the love of God, please make it easier to listen to religious Christmas music. “Lean on Me” ain’t it, nor is “Lead me Home Precious Lord”"`
   * *Classification:* Similarity: 0.206 (< 0.45 threshold), margin: 0.0005 (< 0.02 threshold).
   * *System Action:* Escalated due to `Classifier uncertainty` (`system_intent: uncertain`).
-  * *Root Cause:* Highly colloquial phrasing, sarcasm, and diffuse commentary dilute cosine similarity against prototype vectors, safely triggering classifier abstention.
+  * *Root Cause:* Benign conversational commentary and colloquial phrasing dilute cosine similarity against prototype vectors, safely triggering classifier abstention rather than forcing an inaccurate intent.
 
 ### Mode 5: Length-Based Ambiguity Ceiling on Multi-Grievance Rants
 * **Mechanism:** Customers venting on Twitter often concatenate multiple grievances into a single long tweet. Attempting single-intent automation on multi-issue complaints produces incomplete, tone-deaf replies.
