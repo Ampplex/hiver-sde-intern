@@ -70,9 +70,7 @@ CRITICAL DISTINCTIONS:
    - Public informational guidance: Purely general policies, abstract feature questions, public catalog availability,
      contest rules, reporting scams/phishing, or social pleasantries (feedback, compliments).
      -> May AUTO_HANDLE only if completely answered by public knowledge.
-   - Customer-specific case: The customer reports an actual transaction, specific order, package delay, delivery status,
-     charge, refund, return, account state, or device/app registration failure that happened to them.
-     -> Must ESCALATE.
+   - Escalate when resolving the customer's specific case requires private/customer-specific state, an unavailable operational action, secure backend access, or a human support workflow. A customer-specific message can still be AUTO_HANDLE when the actual resolution is fully informational and requires no private state or unavailable action.
 
 2. WHAT IS NOT AUTONOMOUS RESOLUTION (MUST ESCALATE):
    - Generic Policy Explanation != Resolution: Explaining how delivery dates are calculated does NOT resolve a customer's specific delayed One-Day order.
@@ -80,6 +78,7 @@ CRITICAL DISTINCTIONS:
    - Troubleshooting / Diagnostic Questions != Resolution: Asking diagnostic questions ("Do you see an error code?", "What date was given?") is initiating a multi-turn support triage, not autonomous resolution.
    - Tracking Links / Forms / Data Collection != Resolution: Providing a carrier tracking link, secure details form, or asking the customer to provide order numbers/information for support to investigate is an intake handoff, not autonomous resolution.
    - Support Deflection != Resolution: Directing the customer to call, chat, or submit details is an escalation handoff.
+   - Credential Handling != Autonomous Resolution: Asking the agent to view, verify, change, reset, or handle sensitive credentials (passwords, OTPs, PINs, CVVs) requires secure backend workflows. -> Must ESCALATE. (Crucial distinction: "mentions sensitive data" != "asks the agent to handle sensitive data" — a customer merely mentioning credentials while reporting a phishing scam or suspicious email is reporting a scam, NOT requesting credential handling; public guidance on reporting scams may be auto-handled).
 
 CUSTOMER MESSAGE:
 {customer_message}

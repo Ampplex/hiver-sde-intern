@@ -3,19 +3,6 @@ import re
 
 ALLOWED_DECISIONS = {"auto_handle", "escalate"}
 
-# Keep deterministic checks only for unambiguous sensitive-data handling.
-# Semantic capability decisions are delegated to CapabilityGuard.
-SENSITIVE_DATA_PATTERNS = [
-    r"\b(?:otp|one[- ]time password|cvv|cvc|security code)\b",
-    r"\b(?:password|passcode)\b.*\b(?:send|share|tell|provide)\b",
-]
-
-
-def looks_sensitive_data_request(text):
-    text = str(text).lower()
-    return any(re.search(pattern, text) for pattern in SENSITIVE_DATA_PATTERNS)
-
-
 def looks_ambiguous(text):
     # Keep this deterministic check intentionally simple. Do not use generic
     # conversational words such as "and" or "also" as ambiguity signals.
@@ -69,15 +56,6 @@ def apply_safety_policy(
             "decision": "escalate",
             "draft_reply": None,
             "reason": "Message may contain multiple or ambiguous issues.",
-        }
-
-    # Deterministic security tripwire; do not delegate sensitive credential
-    # handling to a probabilistic model.
-    if looks_sensitive_data_request(customer_message):
-        return {
-            "decision": "escalate",
-            "draft_reply": None,
-            "reason": "Request involves sensitive authentication information.",
         }
 
     if not historical_cases:
