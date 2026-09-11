@@ -39,7 +39,7 @@ This log documents the key non-obvious architectural, algorithmic, and operation
 
 ### 6. Abstention as a First-Class Classifier Output
 * **Decision**: The intent classifier outputs uncertain whenever the top-1 cosine similarity falls below 0.45 OR the margin between top-1 and top-2 falls below 0.02.
-* **Rationale**: In customer support, classifying an inquiry into the wrong intent causes downstream retrieval of irrelevant precedents, which directly poisons response generation. With 104 fine-grained intents, a margin of 0.05 proved excessively wide and caused artificial abstention on sibling categories. Calibrating the margin to 0.02 safely reduced abstentions from 58.5% to 34.5% while maintaining a 0.0% unsafe auto rate. Explicit abstention allows the agent to safely escalate to human specialists whenever confidence is marginal, directly protecting end-user trust.
+* **Rationale**: In customer support, classifying an inquiry into the wrong intent causes downstream retrieval of irrelevant precedents, which directly poisons response generation. The 0.05 margin threshold was empirically over-conservative for the fine-grained 104-intent taxonomy. Calibration to 0.02 reduced unnecessary abstention (58.5% to 34.5%) while preserving the safety gate (0.0% unsafe auto rate). Explicit abstention allows the agent to safely escalate to human specialists whenever confidence is marginal, directly protecting end-user trust.
 
 ---
 

@@ -26,7 +26,8 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 | **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 |
 
 *Zero data leakage: Strictly partitioned by `conversation_id` (seed=42) with 0% overlap against the 8,000-case training corpus.*
-*Headline summary: On 200 evaluated cases, the system auto-handled 13 cases with 0 unsafe auto-handles under the audited policy, while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*
+*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall, while achieving 4.72/5 conditional response quality versus 2.43/5 for direct BM25 retrieval.*
+*Caveat: Coverage is intentionally conservative and dataset-dependent; it should not be interpreted as a production automation rate. Evaluation labels were manually audited with AI assistance.*
 
 ---
 
@@ -34,7 +35,7 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 
 * 📄 **[Technical Evaluation Report](REPORT.md)**: Full 6-page report covering problem framing, results vs baselines, failure modes, the mandatory *"What is misleading about my headline number?"* section, and future roadmap.
 * 📋 **[Engineering Decision Log](DECISION_LOG.md)**: Plain list of 12 non-obvious engineering decisions and their architectural rationale.
-* 🏷️ **[Golden Evaluation Set](data/processed/eval/golden_labels_manual.csv)**: 200 hand-labeled examples with golden intents, actions, and justifications.
+* 🏷️ **[Golden Evaluation Set](data/processed/eval/golden_labels_manual.csv)**: 200 evaluation examples with golden intents, actions, and justifications, manually audited with AI assistance.
 * ⚖️ **[Judge Evaluation & Human Agreement](data/processed/eval/judge_human_agreement.json)**: Automated LLM-as-a-judge scores and human concordance analysis.
 
 ---
