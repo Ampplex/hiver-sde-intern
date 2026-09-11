@@ -34,3 +34,6 @@ venv.bak/
 
 # Ignore the monolithic code dump if preferred
 all_code.md
+
+# Reference PDFs
+*.pdf
