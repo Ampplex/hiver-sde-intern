@@ -116,7 +116,7 @@ def main():
     predictions = pd.read_parquet(PREDICTIONS)
     corpus = pd.read_parquet(CORPUS)
 
-    # Benchmark cohort: 54 human-labeled gold auto_handle cases
+    # Benchmark cohort: current audited gold auto_handle cases.
     # Methodological framing: conditional response-generation quality with the final confidence gate ablated.
     # Evaluates whether retrieval + LLM generation produce high-quality grounded replies when a human
     # confirms the inquiry is safe to automate, independent of the deployed system's conservative safety gate.
@@ -140,16 +140,19 @@ def main():
     generator = ResponseGenerator(region=os.getenv("AWS_REGION", "us-west-2"), model_id=model_id)
     retriever = HybridRetriever()
 
-    # Load existing checkpoint if resuming
+    # Load existing checkpoint if resuming, keeping ONLY currently eligible cases
     existing_records = []
     judged_ids = set()
+    eligible_ids = set(eligible["conversation_id"])
     if OUTPUT.exists():
         try:
             existing_df = pd.read_parquet(OUTPUT)
             if "conversation_id" in existing_df.columns:
-                existing_records = existing_df.to_dict(orient="records")
-                judged_ids = set(existing_df["conversation_id"])
-                print(f"Resuming from existing checkpoint: {len(judged_ids)} cases already judged.")
+                all_records = existing_df.to_dict(orient="records")
+                # Filter out stale records that are no longer in the eligible cohort
+                existing_records = [r for r in all_records if r.get("conversation_id") in eligible_ids]
+                judged_ids = {r["conversation_id"] for r in existing_records}
+                print(f"Resuming from existing checkpoint: {len(judged_ids)} currently eligible cases already judged.")
         except Exception:
             existing_records = []
             judged_ids = set()

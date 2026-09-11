@@ -54,7 +54,7 @@ This log documents the key non-obvious architectural, algorithmic, and operation
 
 ### 9. Ablated Response-Quality Benchmarking for LLM-as-a-Judge
 * **Decision**: To evaluate response-generation quality independently of the conservative runtime safety gate, we constructed a conditional benchmark from cases manually audited as suitable for automated resolution and compared the generated response against the BM25 baseline.
-* **Rationale**: If response quality is measured only on cases that pass the deployed safety gate, sample size is restricted to 13 cases, creating severe selection bias. The benchmark used the original 54-case auto-handle cohort for the reported 4.72/5 result; this is a conditional response-quality benchmark rather than the final end-to-end 200-case coverage metric.
+* **Rationale**: If response quality is measured only on cases that pass the deployed safety gate, sample size is restricted to 13 cases, creating severe selection bias. The benchmark evaluated the 47-case audited auto-handle cohort for the reported 4.72/5 result; this is a conditional response-quality benchmark rather than the final end-to-end 200-case coverage metric.
 
 ---
 

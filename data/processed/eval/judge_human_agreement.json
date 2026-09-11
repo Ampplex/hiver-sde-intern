@@ -1,35 +1,35 @@
 {
-  "n_overlap": 54,
+  "n_overlap": 47,
   "metrics": {
     "correctness": {
-      "spearman": 0.5369265696827804,
-      "quadratic_kappa": 0.6553191489361703,
-      "mae": 0.16666666666666666
+      "spearman": 0.5907109224818802,
+      "quadratic_kappa": 0.7106420404573439,
+      "mae": 0.14893617021276595
     },
     "groundedness": {
-      "spearman": 0.8250595932884062,
-      "quadratic_kappa": 0.9323308270676691,
-      "mae": 0.18518518518518517
+      "spearman": 0.8186727978244773,
+      "quadratic_kappa": 0.9169317780134323,
+      "mae": 0.2127659574468085
     },
     "resolution_appropriateness": {
-      "spearman": 0.8625664623179471,
-      "quadratic_kappa": 0.9055393586005831,
-      "mae": 0.1111111111111111
+      "spearman": 0.8788953473383235,
+      "quadratic_kappa": 0.9110858872493379,
+      "mae": 0.10638297872340426
     },
     "completeness": {
-      "spearman": 0.6126329642911571,
-      "quadratic_kappa": 0.7102439024390244,
-      "mae": 0.16666666666666666
+      "spearman": 0.6612180444645938,
+      "quadratic_kappa": 0.7492590397154713,
+      "mae": 0.14893617021276595
     },
     "communication_quality": {
-      "spearman": 0.28812994971805395,
-      "quadratic_kappa": 0.1533101045296167,
-      "mae": 0.16666666666666666
+      "spearman": 0.30296441971546184,
+      "quadratic_kappa": 0.1681415929203538,
+      "mae": 0.1702127659574468
     },
     "overall": {
-      "spearman": 0.6910807223499287,
-      "quadratic_kappa": 0.8038740920096852,
-      "mae": 0.16666666666666666
+      "spearman": 0.6538528475685843,
+      "quadratic_kappa": 0.7853881278538812,
+      "mae": 0.19148936170212766
     }
   }
 }

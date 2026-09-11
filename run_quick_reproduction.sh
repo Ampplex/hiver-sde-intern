@@ -26,7 +26,7 @@ echo ""
 echo "--> [3/6] Testing agent components..."
 python scripts/08_test_agent_components.py
 
-# Step 5: Run end-to-end evaluation on the 200-case human golden set (~30 sec)
+# Step 5: Run end-to-end evaluation on the 200-case audited golden set
 echo ""
 echo "--> [4/6] Running system evaluation on 200 golden cases..."
 python scripts/11_run_evaluation.py

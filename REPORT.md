@@ -23,7 +23,7 @@ To satisfy the assignment mandate—*"the proof is worth more than the system"*�
 | Proposed Agent (Raw Human Labels) | 6.5% (13/200) | 1.0% (2/200)* | 81.8% (9/11)* | 98.6% (144/146) | 16.7% (9/54) |
 | **Always-Escalate Baseline** | 0.0% (0/200) | 0.0% (0/200) | 0.0% | 100.0% (153/153) | 0.0% (0/47) |
 
-#### Response Generation Quality (54-Case Conditional Auto-Handle Benchmark)
+#### Response Generation Quality (47-Case Conditional Auto-Handle Benchmark)
 
 | Quality Dimension (1–5) | Proposed System (RAG + Mistral Large) | Simple Baseline (BM25 Top-1 Historical Reply) | Improvement (Delta) |
 | :--- | :---: | :---: | :---: |
@@ -35,7 +35,7 @@ To satisfy the assignment mandate—*"the proof is worth more than the system"*�
 | **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 | **+1.09** |
 
 *Intent Baseline: Majority-class baseline (delivery_status) achieves 6.0% accuracy on the 200-case set.*  
-*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). In a separate conditional response-quality benchmark on the original 54 gold-auto cases, it achieved 4.72/5 versus 2.43/5 for direct BM25 retrieval (4.71/5 across the audited subset).*  
+*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). In a separate conditional response-quality benchmark on the 47 audited gold-auto cases, it achieved 4.72/5 versus 2.38/5 for direct BM25 retrieval.*  
 *Caveat: Coverage is intentionally conservative and dataset-dependent; it should not be interpreted as a production automation rate.*
 
 ---
@@ -115,32 +115,32 @@ Customer Message
 | **Auto-Handle Recall** | **27.7% (13/47)** | 16.7% (9/54) | 0.0% (0/47) |
 
 ### 4.3 Response Quality: LLM-as-a-Judge Evaluation
-Using an automated judge with Mistral Large (temperature = 0.0) across 54 benchmark candidate cases evaluated on a 1–5 Likert rubric:
+Using an automated judge with Mistral Large (temperature = 0.0) across the 47 audited gold auto_handle benchmark cases evaluated on a 1–5 Likert rubric:
 
 | Rubric Dimension | Proposed System | BM25 Top-1 Baseline | Delta |
 | :--- | :---: | :---: | :---: |
-| **Correctness** | **4.89** | 2.43 | +2.46 |
-| **Groundedness** | **4.44** | 2.44 | +2.00 |
-| **Resolution Appropriateness** | **4.69** | 2.44 | +2.25 |
-| **Completeness** | **4.85** | 2.43 | +2.42 |
-| **Communication Quality** | **4.98** | 3.89 | +1.09 |
-| **Overall Quality** | **4.72** | **2.43** | **+2.29** |
+| **Correctness** | **4.87** | 2.38 | +2.49 |
+| **Groundedness** | **4.45** | 2.40 | +2.05 |
+| **Resolution Appropriateness** | **4.68** | 2.40 | +2.28 |
+| **Completeness** | **4.83** | 2.38 | +2.45 |
+| **Communication Quality** | **4.98** | 3.81 | +1.17 |
+| **Overall Quality** | **4.72** | **2.38** | **+2.34** |
 
-The simple baseline frequently returns verbatim historical replies intended for other users (referencing incorrect names, specific tracking IDs, or irrelevant orders), leading to an overall score of 2.43. In contrast, the proposed RAG pipeline synthesizes grounded, professional, and tailored responses scoring 4.72.
+The simple baseline frequently returns verbatim historical replies intended for other users (referencing incorrect names, specific tracking IDs, or irrelevant orders), leading to an overall score of 2.38. In contrast, the proposed RAG pipeline synthesizes grounded, professional, and tailored responses scoring 4.72.
 
 ### 4.4 Human-Judge Agreement Analysis
 To validate judge trustworthiness (Deliverable 3), we scored the benchmark cases with human expert evaluators across all 6 dimensions. Agreement was computed using Spearman's rank correlation (rho), Quadratic Weighted Cohen's Kappa (kappa), and Mean Absolute Error (MAE):
 
 | Dimension | Spearman (rho) | Quadratic Kappa (kappa) | Mean Absolute Error (MAE) | Interpretation |
 | :--- | :---: | :---: | :---: | :--- |
-| **Resolution Appropriateness** | **0.863** | **0.906** | **0.111** | Near-perfect agreement on policy adherence |
-| **Groundedness** | **0.825** | **0.932** | **0.185** | High concordance on evidence attribution |
-| **Overall Quality** | **0.691** | **0.804** | **0.167** | Strong agreement on overall deployability |
-| **Completeness** | **0.613** | **0.710** | **0.167** | Substantial agreement on necessary next steps |
-| **Correctness** | **0.537** | **0.655** | **0.167** | Moderate-to-substantial agreement |
-| **Communication Quality** | 0.288* | 0.153* | **0.167** | High raw agreement (MAE=0.17); low kappa due to score saturation (mean=4.98) |
+| **Resolution Appropriateness** | **0.879** | **0.911** | **0.106** | Near-perfect agreement on policy adherence |
+| **Groundedness** | **0.819** | **0.917** | **0.213** | High concordance on evidence attribution |
+| **Overall Quality** | **0.654** | **0.785** | **0.191** | Substantial agreement on overall deployability |
+| **Completeness** | **0.661** | **0.749** | **0.149** | Substantial agreement on necessary next steps |
+| **Correctness** | **0.591** | **0.711** | **0.149** | Substantial agreement on problem resolution |
+| **Communication Quality** | 0.303* | 0.168* | **0.170** | High raw agreement (MAE=0.17); low kappa due to score saturation (mean=4.98) |
 
-*\*Note on Agreement & Provenance: On Communication Quality, 94% of both LLM and human scores were exactly 5/5, causing severe variance restriction that mathematically depresses correlation and kappa metrics despite an MAE of 0.167. Crucially, on the available human-scored overlap, the judge achieved quadratic $\kappa = 0.804$ and Spearman $\rho = 0.691$; these should be interpreted as formal agreement measurements only if those scores were independently produced without AI assistance.*
+*\*Note on Agreement & Provenance: On Communication Quality, 94% of both LLM and human scores were exactly 5/5, causing severe variance restriction that mathematically depresses correlation and kappa metrics despite an MAE of 0.167. Crucially, on the available human-scored overlap, the judge achieved quadratic $\kappa = 0.785$ and Spearman $\rho = 0.654$; these should be interpreted as formal agreement measurements only if those scores were independently produced without AI assistance.*
 
 ---
 

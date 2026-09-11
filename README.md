@@ -14,7 +14,7 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 | **Auto-Handle Coverage** | **6.5% (13/200)** | 6.5% (13/200) | 0.0% (0/200) |
 | **Auto-Handle Recall** | **27.7% (13/47)** | 16.7% (9/54) | 0.0% (0/47) |
 
-### Response Quality (54-Case Conditional Auto-Handle Benchmark)
+### Response Quality (47-Case Conditional Auto-Handle Benchmark)
 
 | Quality Dimension (1–5) | Proposed System (RAG + Mistral Large) | Simple Baseline (BM25 Top-1 Historical Reply) |
 | :--- | :---: | :---: |
@@ -26,7 +26,7 @@ An autonomous customer support agent built on the Twitter Customer Support (TWCS
 | **Communication Quality** | **4.98 / 5.00** | 3.89 / 5.00 |
 
 *Zero data leakage: Strictly partitioned by `conversation_id` (seed=42) with 0% overlap against the 8,000-case training corpus.*
-*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). In a separate conditional response-quality benchmark on the original 54 gold-auto cases, it achieved 4.72/5 versus 2.43/5 for direct BM25 retrieval (4.71/5 on the audited subset).*
+*Headline summary: On the 200-case audited evaluation set, the system auto-handled 13 cases (6.5%) with 0 observed unsafe auto-handles and 100% escalation recall (153/153). In a separate conditional response-quality benchmark on the 47 audited gold-auto cases, it achieved 4.72/5 versus 2.38/5 for direct BM25 retrieval.*
 *Caveat: Coverage is intentionally conservative and dataset-dependent; it should not be interpreted as a production automation rate. Evaluation labels were manually audited with AI assistance.*
 
 ---

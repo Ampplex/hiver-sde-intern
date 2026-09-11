@@ -1,5 +1,4 @@
 import os
-import re
 
 ALLOWED_DECISIONS = {"auto_handle", "escalate"}
 
