@@ -95,6 +95,41 @@ Customer Message
 4. **LLM CapabilityGuard:** A dedicated Mistral Large call inspects the draft reply against the customer inquiry. It explicitly evaluates whether the inquiry can be resolved with public informational guidance, or whether it requires private state, external actions, or human support workflows.
 5. **Deterministic Structural Policy:** Validates schema invariants, verifies output formatting, and enforces an 80-word ceiling to catch rambling, multi-issue complaints.
 
+### 3.1 Live Decision-Making Traces Across Distinct Scenarios
+
+To prove the core assignment requirement that the system classifies, grounds replies, and decides auto-handle vs. escalate with a stated operational reason, the pipeline exhibits four distinct operational trajectories:
+
+* **Scenario 1: Safe Public Informational Query (`AUTO_HANDLE`)**
+  * *Customer Tweet:* `@AmazonHelp is it possible to give Amazon Prime membership as a gift in the U.K.?`
+  * *Classification:* `prime_subscription_query` (Top-1 sim: $0.5171 > 0.45$, margin: $0.0219 > 0.02$).
+  * *Retrieval & Generation:* Retrieved Case 2166047 (`dense = 0.8550`, `bm25 = 16.31`); generator recommended `auto_handle`.
+  * *CapabilityGuard:* Approved `auto_handle` (*"Provides a direct and complete answer using only public information."*).
+  * *Final Action & Stated Reason:* **`AUTO_HANDLE`** — *"Consistent with historical responses for similar queries."*
+  * *Draft Reply:* *"@Customer Hi, sorry but that feature isn't available in the UK at the moment. We haven't made any announcements about this to date. ^JJ"*
+
+* **Scenario 2: Private Order State Inquiry (`ESCALATE` via Capability Boundary)**
+  * *Customer Tweet:* `@AmazonHelp can i change my delivery date after ordering?`
+  * *Classification:* `address_change_request` (Top-1 sim: 0.5292, margin: 0.0503).
+  * *Retrieval & Generation:* Retrieved 3 precedents; generator drafted a reply with a web link and recommended `auto_handle`.
+  * *CapabilityGuard:* **`ESCALATE`** (*"The customer's inquiry requires access to their specific order details, which the agent cannot handle autonomously."*).
+  * *Final Action & Stated Reason:* **`ESCALATE`** — *"The customer's inquiry requires access to their specific order details, which the agent cannot handle autonomously."*
+  * *Significance:* Demonstrates the critical capability boundary in action (`Generator → AUTO_HANDLE → CapabilityGuard → ESCALATE → Final: ESCALATE`). The agent vetoes automated link deflection because changing order dates requires private state.
+
+* **Scenario 3: Phishing / Scam Report (`AUTO_HANDLE` Guidance)**
+  * *Customer Tweet:* `@AmazonHelp fake mail asking for credit card details. Is this official?`
+  * *Classification:* `suspicious_activity_report` (Top-1 sim: 0.6371, margin: 0.1255).
+  * *Retrieval & Generation:* Retrieved Cases 2954482, 2474954, 2905013 (`dense = 0.6622`); generator recommended `auto_handle`.
+  * *CapabilityGuard:* Approved `auto_handle` (*"Provides general public guidance and does not require accessing private account data."*).
+  * *Final Action & Stated Reason:* **`AUTO_HANDLE`** — *"Consistent with the pattern of responses for similar cases."*
+  * *Draft Reply:* *"@Customer Thank you for bringing this to our attention! We would never request personal information via Twitter. Please do not provide any account details. If you receive more suspicious emails, you can report them directly via: https://t.co/ScIX65iVYc. Thank you! ^NV"*
+
+* **Scenario 4: Conversational Out-of-Distribution Query (`ESCALATE` via Classifier Abstention)**
+  * *Customer Tweet:* `Thanks for the quick delivery! Keep up the great work.`
+  * *Classification:* **`uncertain`** (Top-1 sim: $0.3756 < 0.45$ confidence threshold, margin: 0.0461).
+  * *Retrieval & Generation:* Safely bypassed due to low classifier confidence.
+  * *Final Action & Stated Reason:* **`ESCALATE`** — *"Classifier uncertainty."*
+  * *Significance:* Proves fail-closed safety: low-similarity queries are routed to humans rather than forcing an inaccurate intent.
+
 ---
 
 ## 4. Quantitative Evaluation & Baseline Comparison

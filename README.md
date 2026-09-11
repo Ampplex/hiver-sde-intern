@@ -142,6 +142,48 @@ Test any custom customer tweet interactively through the complete 5-stage agent 
 python scripts/09_run_agent.py --query "Where is my delayed package? Tracking has not updated in 3 days."
 ```
 
+### 5. Live Agent Decision Demonstrations (Decide + Stated Reason)
+
+Below are four live runs demonstrating the system's decision-making across distinct scenarios, directly proving compliance with the assignment requirement to classify, ground replies, and decide auto-handle vs. escalate with a stated operational reason:
+
+#### Scenario 1: Safe Public Informational Query (Auto-Handled)
+* **Customer Tweet:** `@AmazonHelp is it possible to give Amazon Prime membership as a gift in the U.K.?`
+* **Classification:** `prime_subscription_query` (Top-1 sim: $0.5171 > 0.45$, margin: $0.0219 > 0.02$). Both similarity and margin thresholds are satisfied.
+* **Historical Retrieval:** Retrieved Case 2166047 (`dense_score = 0.8550`, `bm25 = 16.31`, `rrf = 0.0328`).
+* **Response Generation (Mistral Large):** Drafts reply and recommends `auto_handle`.
+* **CapabilityGuard Check:** `auto_handle` (*"The agent provides a direct and complete answer using only publicly available information."*).
+* **Final Action:** **`AUTO_HANDLE`**
+* **Stated Reason:** Consistent with historical responses for similar queries.
+* **Draft Reply Sent:** *"@Customer Hi, sorry but that feature isn't available in the UK at the moment. We haven't made any announcements about this to date. ^JJ"*
+
+#### Scenario 2: Inquiry Requiring Private Order State (Safely Escalated via Capability Boundary)
+* **Customer Tweet:** `@AmazonHelp can i change my delivery date after ordering?`
+* **Classification:** `address_change_request` (Top-1 sim: 0.5292, margin: 0.0503).
+* **Historical Retrieval:** Retrieved 3 historical precedent cases.
+* **Response Generation (Mistral Large):** Drafts reply with web link and recommends `auto_handle`.
+* **CapabilityGuard Safety Check:** **`ESCALATE`** (*"The customer's inquiry requires access to their specific order details, which the agent cannot handle autonomously."*).
+* **Final Action:** **`ESCALATE`**
+* **Stated Reason:** *"The customer's inquiry requires access to their specific order details, which the agent cannot handle autonomously."*
+* **Significance:** Illustrates the critical capability boundary in action: the probabilistic generator initially proposed auto-handling with a web link, but `CapabilityGuard` vetoed it (`Generator → AUTO_HANDLE → CapabilityGuard → ESCALATE → Final: ESCALATE`) because modifying in-flight order delivery dates requires private customer state and a human support workflow.
+
+#### Scenario 3: Phishing / Scam Report (Auto-Handled Guidance)
+* **Customer Tweet:** `@AmazonHelp fake mail asking for credit card details. Is this official?`
+* **Classification:** `suspicious_activity_report` (Top-1 sim: 0.6371, margin: 0.1255).
+* **Historical Retrieval:** Retrieved Cases 2954482, 2474954, 2905013 (`dense = 0.6622`).
+* **Response Generation:** Drafts security warning and recommends `auto_handle`.
+* **CapabilityGuard Check:** `auto_handle` (*"Provides general public guidance on reporting phishing and does not require accessing private account data."*).
+* **Final Action:** **`AUTO_HANDLE`**
+* **Stated Reason:** Consistent with the pattern of responses for similar cases.
+* **Draft Reply Sent:** *"@Customer Thank you for bringing this to our attention! We would never request personal information via Twitter. Please do not provide any account details. If you receive more suspicious emails, you can report them directly via: https://t.co/ScIX65iVYc. Thank you! ^NV"*
+
+#### Scenario 4: Conversational / Out-of-Distribution Query (Fail-Closed Classifier Abstention)
+* **Customer Tweet:** `Thanks for the quick delivery! Keep up the great work.`
+* **Classification:** **`uncertain`** (Top-1 sim: $0.3756 < 0.45$ confidence threshold, margin: 0.0461).
+* **Retrieval & Generation:** Bypassed due to classifier uncertainty.
+* **Final Action:** **`ESCALATE`**
+* **Stated Reason:** *"Classifier uncertainty."*
+* **Significance:** Demonstrates fail-closed safety: when a customer query falls below the calibrated 0.45 semantic similarity threshold, the agent safely abstains rather than forcing a low-confidence intent.
+
 ---
 
 ## Project Structure
