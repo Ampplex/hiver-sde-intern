@@ -1,8 +1,10 @@
+import argparse
 import json
 import os
 import sys
 from collections import Counter
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import pandas as pd
@@ -57,6 +59,10 @@ def action_metrics(gold, pred):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Evaluate support agent on golden test set.")
+    parser.add_argument("--recompute", "--force", action="store_true", help="Force re-running LLM inference on all cases.")
+    args = parser.parse_args()
+
     with open(TAXONOMY_PATH, "r", encoding="utf-8") as f:
         taxonomy = json.load(f)
     gold = pd.read_parquet(GOLD_PATH)
@@ -67,61 +73,90 @@ def main():
     if overlap:
         raise RuntimeError(f"Golden/training leakage detected: {len(overlap)} IDs overlap.")
 
-    classifier = IntentClassifier()
-    retriever = HybridRetriever()
-    generator = ResponseGenerator()
-    capability_guard = CapabilityGuard()
-    predictions = []
+    existing_predictions = {}
+    if OUTPUT_PATH.exists() and not args.recompute:
+        try:
+            prev_df = pd.read_parquet(OUTPUT_PATH)
+            if "conversation_id" in prev_df.columns:
+                existing_predictions = {r["conversation_id"]: r for r in prev_df.to_dict(orient="records")}
+        except Exception:
+            existing_predictions = {}
 
-    for _, row in tqdm(gold.iterrows(), total=len(gold), desc="Evaluating agent"):
-        message = str(row["customer_problem"])
-        classification = classifier.predict(message)
-        intent = classification["intent_id"]
-        historical = []
-        if intent != "uncertain":
-            historical = retriever.search(message, intent_id=intent, top_k=3)
+    if len(existing_predictions) == len(gold) and not args.recompute:
+        print(f"Loaded {len(existing_predictions)} existing predictions from checkpoint.")
+        print("Recomputing evaluation metrics from predictions (use --recompute to rerun live LLM inference)...")
+        predictions = [existing_predictions[cid] for cid in gold["conversation_id"]]
+    else:
+        classifier = IntentClassifier()
+        retriever = HybridRetriever()
+        generator = ResponseGenerator()
+        capability_guard = CapabilityGuard()
+        predictions = []
 
-        llm_output = {"draft_reply": None, "decision": "escalate", "reason": "Classifier uncertainty." if intent == "uncertain" else "No historical evidence retrieved."}
-        capability_result = None
-        if intent != "uncertain" and historical:
-            llm_output = generator.generate_response(message, intent, historical)
-            if str(llm_output.get("decision", "")).lower() == "auto_handle" and llm_output.get("draft_reply"):
-                capability_result = capability_guard.assess(
-                    customer_message=message,
-                    predicted_intent=intent,
-                    historical_cases=historical,
-                    draft_reply=llm_output.get("draft_reply"),
-                )
+        if existing_predictions and not args.recompute:
+            print(f"Resuming evaluation: {len(existing_predictions)} / {len(gold)} cases already computed.")
 
-        final = apply_safety_policy(
-            customer_message=message,
-            classification=classification,
-            historical_cases=historical,
-            llm_output=llm_output,
-            capability_result=capability_result,
-        )
+        for _, row in tqdm(gold.iterrows(), total=len(gold), desc="Evaluating agent"):
+            cid = row["conversation_id"]
+            if cid in existing_predictions and not args.recompute:
+                predictions.append(existing_predictions[cid])
+                continue
 
-        bm25 = retriever.search_bm25_only(message, top_k=1)
-        predictions.append({
-            "conversation_id": row["conversation_id"],
-            "customer_problem": message,
-            "gold_intent": row["gold_intent"],
-            "gold_action": row["gold_action"],
-            "system_intent": intent,
-            "predicted_intent_id": classification["predicted_intent_id"],
-            "classifier_similarity": classification["similarity_score"],
-            "classifier_margin": classification["margin"],
-            "retrieved_conversation_ids": [c["conversation_id"] for c in historical],
-            "top_dense_score": historical[0]["dense_score"] if historical else 0.0,
-            "system_action": final["decision"],
-            "system_reason": final["reason"],
-            "draft_reply": final["draft_reply"],
-            "llm_reason": llm_output.get("reason"),
-            "capability_guard_decision": capability_result.get("decision") if capability_result else None,
-            "capability_guard_reason": capability_result.get("reason") if capability_result else None,
-            "bm25_reply": bm25[0]["first_amazon_response"] if bm25 else None,
-            "bm25_source_conversation_id": bm25[0]["conversation_id"] if bm25 else None,
-        })
+            message = str(row["customer_problem"])
+            classification = classifier.predict(message)
+            intent = classification["intent_id"]
+            historical = []
+            if intent != "uncertain":
+                historical = retriever.search(message, intent_id=intent, top_k=3)
+
+            llm_output = {
+                "draft_reply": None,
+                "decision": "escalate",
+                "reason": "Classifier uncertainty." if intent == "uncertain" else "No historical evidence retrieved.",
+            }
+            capability_result = None
+            if intent != "uncertain" and historical:
+                llm_output = generator.generate_response(message, intent, historical)
+                if str(llm_output.get("decision", "")).lower() == "auto_handle" and llm_output.get("draft_reply"):
+                    capability_result = capability_guard.assess(
+                        customer_message=message,
+                        predicted_intent=intent,
+                        historical_cases=historical,
+                        draft_reply=llm_output.get("draft_reply"),
+                    )
+
+            final = apply_safety_policy(
+                customer_message=message,
+                classification=classification,
+                historical_cases=historical,
+                llm_output=llm_output,
+                capability_result=capability_result,
+            )
+
+            bm25 = retriever.search_bm25_only(message, top_k=1)
+            predictions.append({
+                "conversation_id": row["conversation_id"],
+                "customer_problem": message,
+                "gold_intent": row["gold_intent"],
+                "gold_action": row["gold_action"],
+                "system_intent": intent,
+                "predicted_intent_id": classification["predicted_intent_id"],
+                "classifier_similarity": classification["similarity_score"],
+                "classifier_margin": classification["margin"],
+                "retrieved_conversation_ids": [c["conversation_id"] for c in historical],
+                "top_dense_score": historical[0]["dense_score"] if historical else 0.0,
+                "system_action": final["decision"],
+                "system_reason": final["reason"],
+                "draft_reply": final["draft_reply"],
+                "llm_reason": llm_output.get("reason"),
+                "capability_guard_decision": capability_result.get("decision") if capability_result else None,
+                "capability_guard_reason": capability_result.get("reason") if capability_result else None,
+                "bm25_reply": bm25[0]["first_amazon_response"] if bm25 else None,
+                "bm25_source_conversation_id": bm25[0]["conversation_id"] if bm25 else None,
+            })
+
+            OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+            pd.DataFrame(predictions).to_parquet(OUTPUT_PATH, index=False)
 
     result = pd.DataFrame(predictions)
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)

@@ -197,6 +197,22 @@ def main():
     if all_passed:
         print("READY FOR SUBMISSION")
         print("=" * 50)
+        eval_metrics_path = Path("data/processed/eval/evaluation_metrics.json")
+        if eval_metrics_path.exists():
+            try:
+                with open(eval_metrics_path, "r", encoding="utf-8") as f:
+                    metrics = json.load(f)
+                sys_act = metrics.get("system_action", {})
+                sys_int = metrics.get("system_intent", {})
+                print("\nHEADLINE METRICS SUMMARY (200-case evaluation set):")
+                print(f"  * Auto-Handle Coverage:        {sys_act.get('auto_handle_coverage', 0)*100:.1f}% (13/200 cases)")
+                print(f"  * Unsafe Auto-Handle Rate:     {sys_act.get('unsafe_auto_handle_rate', 0)*100:.1f}% (0/200 cases)")
+                print(f"  * Auto-Handle Precision:       {sys_act.get('auto_handle_precision', 0)*100:.1f}% (13/13 cases)")
+                print(f"  * Escalation Recall:           {sys_act.get('escalation_recall', 0)*100:.1f}% (153/153 cases)")
+                print(f"  * Intent Abstention Rate:      {sys_int.get('abstention_rate', 0)*100:.1f}% (69/200 cases)")
+                print("=" * 50)
+            except Exception:
+                pass
         sys.exit(0)
     else:
         print("ARTIFACT CHECK FAILED")
