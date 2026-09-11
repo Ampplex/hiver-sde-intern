@@ -9,9 +9,9 @@
 
 ## 1. Executive Summary
 
-We designed, implemented, and rigorously evaluated an autonomous AI support agent for **AmazonHelp**, built upon the Twitter Customer Support (TWCS) dataset. The agent combines semantic intent classification, intent-aware hybrid retrieval (BM25 + Dense vector + Reciprocal Rank Fusion), retrieval-grounded response generation, an LLM-based **CapabilityGuard**, and a deterministic structural safety policy.
+We designed, implemented, and evaluated an autonomous AI support agent for **AmazonHelp**, built upon the Twitter Customer Support (TWCS) dataset, evaluated using a leakage-controlled 200-case benchmark and a separate conditional response-quality benchmark. The agent combines semantic intent classification, hard intent-conditioned hybrid retrieval (BM25 + Dense vector + Reciprocal Rank Fusion), retrieval-grounded response generation, an LLM-based **CapabilityGuard**, and a deterministic structural safety policy.
 
-To satisfy the assignment mandate—*"the proof is worth more than the system"*—we constructed a 200-case golden evaluation set, manually audited with AI assistance and strictly partitioned at the conversation boundary to guarantee zero data leakage. We evaluated our system against two trivial baselines and one simple retrieval baseline, established an automated LLM-as-a-judge quality harness, and examined judge alignment against human expert ratings using Spearman rank correlation, Quadratic Weighted Cohen's Kappa, and Mean Absolute Error.
+To satisfy the assignment mandate—*"the proof is worth more than the system"*—we constructed a 200-case golden evaluation set, manually audited with AI assistance and strictly partitioned at the conversation boundary, with zero conversation-ID overlap between training and evaluation verified by the submission checks. We evaluated the system against a trivial action baseline (Always-Escalate), a trivial intent baseline (Majority Class), and a simple retrieval baseline (BM25 Top-1 Reply), established an automated LLM-as-a-judge quality harness, and examined judge alignment against human ratings using Spearman rank correlation, Quadratic Weighted Cohen's Kappa, and Mean Absolute Error.
 
 ### Headline Results
 
@@ -44,16 +44,16 @@ To satisfy the assignment mandate—*"the proof is worth more than the system"*�
 
 ### 2.1 The Operational Reality of Amazon on Twitter
 Amazon customer support on Twitter operates in a public, adversarial, high-volume environment. Tweets are visible to millions; competitor brands, journalists, and bad actors scrutinize every response. In this context:
-1. **A hallucinated commitment is a legal and PR crisis:** Promising an unauthorized refund, inaccurate shipping timeline, or fake replacement damages brand reputation.
-2. **Account security is paramount:** Handling account modifications, order cancellations, or payment details over a public Twitter thread violates customer privacy and security guidelines.
+1. **Hallucinations present real operational hazards:** A hallucinated refund, delivery commitment, or account action can create significant customer-trust and operational risk.
+2. **Public boundaries require privacy preservation:** Requests involving account modifications, order-specific state, or payment information require capabilities that are not available to this unauthenticated public-facing agent.
 3. **Escalation is not failure—it is safety:** When an inquiry requires private account state or secure human verification, routing to human specialists with high recall (100%) is the only acceptable engineering posture.
 
 Therefore, **"Good" for AmazonHelp is defined as:**
 $$\text{Unsafe Auto-Handle Rate} = 0.0\% \quad \text{and} \quad \text{Auto-Handle Precision} = 100.0\%$$
-Coverage is secondary to trust: the agent should only resolve inquiries autonomously when it has absolute certainty across classification, precedent retrieval, response generation, and semantic capability boundaries.
+Coverage is secondary to trust: the agent should only resolve inquiries autonomously when the available evidence and capability checks provide sufficient confidence for safe handling.
 
 ### 2.2 What We Chose NOT to Build
-To preserve absolute safety and architectural integrity, we deliberately chose *not* to build:
+To preserve a conservative safety boundary and architectural integrity, we deliberately chose *not* to build:
 * **No Unauthenticated Backend Actions:** We did not build autonomous order modifications, refund issuances, or address changes. Without an authenticated OAuth/API handshake, executing state changes from public tweets is fundamentally unsafe.
 * **No Synthetic "Ticket Closure" via Generic Contact Links:** We rejected the common shortcut of claiming high coverage by having the agent blast every customer with *"Please DM us or visit amazon.com/contact-us."* Routing a customer to a link is an escalation/handoff, not an automated resolution. We treat link-handoff precedents as escalations.
 * **No Brittle Keyword Regexes for Policy Enforcement:** We eliminated hardcoded regex keyword filters (e.g., matching words like refund, card, password). Regexes fail symmetrically: they block benign messages that mention words innocently (e.g., reporting a phishing scam asking for cards) while failing to catch creative paraphrasing. Semantic boundaries belong in an LLM guard, not regular expressions.
@@ -72,7 +72,8 @@ Customer Message
        │ (Confident Intent)
        ▼
 [ Hybrid Retriever ]   ──(dense_score < 0.55 or count < 1)──►  ESCALATE (Insufficient Precedents)
-  BM25 + Dense + Intent-RRF
+  Hard Intent Filter
+  + BM25 + Dense RRF
        │ (Historical Precedents)
        ▼
 [ Response Generator ] ──(LLM recommends escalation)──►  ESCALATE (Generator Decision)
@@ -90,8 +91,8 @@ Customer Message
 ```
 
 1. **Intent Classification & Abstention:** Incoming tweets are embedded via Amazon Titan Embeddings v2 and scored against 104 frozen prototype centroids. If cosine similarity is < 0.45 or margin to the runner-up intent is < 0.02, the system immediately abstains and escalates.
-2. **Intent-Aware Hybrid Retrieval:** When confident, the message and predicted intent query an 8,000-case support corpus using BM25 and Titan Dense embeddings, combined via Reciprocal Rank Fusion (RRF) with intent-matching bonuses.
-3. **Asymmetric Trust Response Generation:** The top historical cases are injected into Mistral Large (2407 via Bedrock). The prompt enforces that historical customer text is untrusted context, while AmazonHelp replies represent the authoritative resolution pattern.
+2. **Intent-Conditioned Hybrid Retrieval:** When confident, the message is restricted to the predicted intent and retrieved from an 8,000-case support corpus using BM25 and Titan Dense embeddings, combined via Reciprocal Rank Fusion (RRF).
+3. **Asymmetric Trust Response Generation:** The top historical cases are injected into Mistral Large (2407 via Bedrock). The prompt enforces an asymmetric trust boundary: historical customer text is untrusted problem description; only AmazonHelp replies are treated as evidence of demonstrated historical resolution patterns.
 4. **LLM CapabilityGuard:** A dedicated Mistral Large call inspects the draft reply against the customer inquiry. It explicitly evaluates whether the inquiry can be resolved with public informational guidance, or whether it requires private state, external actions, or human support workflows.
 5. **Deterministic Structural Policy:** Validates schema invariants, verifies output formatting, and enforces an 80-word ceiling to catch rambling, multi-issue complaints.
 
@@ -127,7 +128,7 @@ To prove the core assignment requirement that the system classifies, grounds rep
 
 ## 4. Quantitative Evaluation & Baseline Comparison
 
-### 4.1 Golden Evaluation Set & Zero-Leakage Guarantee
+### 4.1 Golden Evaluation Set & Leakage-Controlled Partitioning
 * **Size:** 200 conversations sampled from the Twitter Customer Support dataset.
 * **Partitioning:** Strictly partitioned at the conversation_id boundary (seed = 42). Zero conversation IDs overlap between the 8,000-case training corpus and the 200-case evaluation set (verified by scripts/verify_submission_artifacts.py).
 * **Ground Truth Composition:** 47 cases genuine auto_handle (23.5%), 153 cases escalate (76.5%) under audited expert review.
@@ -154,10 +155,10 @@ Using an automated judge with Mistral Large (temperature = 0.0) across the 47 au
 | **Communication Quality** | **4.98** | 3.81 | +1.17 |
 | **Overall Quality** | **4.72** | **2.38** | **+2.34** |
 
-The simple baseline frequently returns verbatim historical replies intended for other users (referencing incorrect names, specific tracking IDs, or irrelevant orders), leading to an overall score of 2.38. In contrast, the proposed RAG pipeline synthesizes responses that are grounded in retrieved historical AmazonHelp evidence, accurately address the customer's stated problem, and generally follow demonstrated historical resolution patterns rather than unsupported deflection, achieving an overall score of 4.72 (+2.34 improvement).
+The simple baseline frequently returns verbatim historical replies intended for other users (referencing incorrect names, specific tracking IDs, or irrelevant orders), leading to an overall score of 2.38. In contrast, the proposed RAG pipeline synthesizes responses that are grounded in retrieved historical AmazonHelp evidence, accurately address the customer's stated problem, and generally follow demonstrated historical resolution patterns rather than blindly copying a retrieved response, achieving an overall score of 4.72 (+2.34 improvement).
 
 ### 4.4 Human-Judge Agreement Analysis
-To validate judge trustworthiness (Deliverable 3), we scored the benchmark cases with human expert evaluators across all 6 dimensions. Agreement was computed using Spearman's rank correlation (rho), Quadratic Weighted Cohen's Kappa (kappa), and Mean Absolute Error (MAE):
+To validate judge trustworthiness (Deliverable 3), we obtained human ratings on the benchmark cases across all 6 dimensions. Agreement was computed using Spearman's rank correlation (rho), Quadratic Weighted Cohen's Kappa (kappa), and Mean Absolute Error (MAE):
 
 | Dimension | Spearman (rho) | Quadratic Kappa (kappa) | Mean Absolute Error (MAE) | Interpretation |
 | :--- | :---: | :---: | :---: | :--- |
@@ -166,7 +167,7 @@ To validate judge trustworthiness (Deliverable 3), we scored the benchmark cases
 | **Overall Quality** | **0.654** | **0.785** | **0.191** | Substantial agreement on overall deployability |
 | **Completeness** | **0.661** | **0.749** | **0.149** | Substantial agreement on necessary next steps |
 | **Correctness** | **0.591** | **0.711** | **0.149** | Substantial agreement on problem resolution |
-| **Communication Quality** | 0.303* | 0.168* | **0.170** | High raw agreement (MAE=0.17); low kappa due to score saturation (mean=4.98) |
+| **Communication Quality** | 0.303* | 0.168* | **0.170** | Low score variance makes rank agreement unreliable here; MAE was low (0.170), while kappa and Spearman were depressed by score saturation |
 
 *\*Note on Agreement & Provenance: On Communication Quality, 94% of both LLM and human scores were exactly 5/5, causing severe variance restriction that mathematically depresses correlation and kappa metrics despite an MAE of 0.167. Crucially, on the available human-scored overlap, the judge achieved quadratic $\kappa = 0.785$ and Spearman $\rho = 0.654$; these should be interpreted as formal agreement measurements only if those scores were independently produced without AI assistance.*
 
@@ -189,12 +190,12 @@ Rather than treating failure as a static snapshot, we adopted an empirical hypot
 Detailed breakdown of the primary failure modes with concrete conversation examples:
 
 ### Mode 1: Classifier Margin Collapse on Sibling / Overlapping Taxonomy Intents
-* **Mechanism:** The 104-intent taxonomy includes highly granular sibling categories (e.g., `prime_membership_query` vs. `prime_subscription_query`, or `delivery_speed_issue` vs. `delivery_status`). The initial 0.05 margin threshold was empirically over-conservative for this fine-grained taxonomy, causing small sibling margins to trigger unnecessary abstention. Calibrating to 0.02 safely resolved 48 abstentions while preserving the safety boundary.
-* **Concrete Example (Case 2790637):**
+* **Mechanism:** The 104-intent taxonomy includes highly granular sibling categories (e.g., `prime_membership_query` vs. `prime_subscription_query`, or `delivery_speed_issue` vs. `delivery_status`). The initial 0.05 margin threshold was empirically over-conservative for this fine-grained taxonomy, causing small sibling margins to trigger unnecessary abstention. A 48-case diagnostic replay showed that lowering the margin threshold from 0.05 to 0.02 recovered a small number of safe public-information cases while introducing 0 observed unsafe auto-handles; cases requiring escalation remained protected by downstream gates.
+* **Historical Diagnostic at Previous 0.05 Margin Threshold (Case 2790637):**
   * *Customer Tweet:* `"@AmazonHelp is it possible to give Amazon Prime membership as a gift in the U.K.?"`
   * *Classification:* Top-1: `prime_membership_query` (sim: 0.642), Top-2: `prime_subscription_query` (sim: 0.618). Margin = 0.024 (< 0.05).
-  * *System Action:* Escalated due to `Classifier uncertainty`.
-  * *Root Cause:* Excessive taxonomy granularity causes artificial margin collapse on benign queries.
+  * *Historical Action:* Escalated due to `Classifier uncertainty`.
+  * *Root Cause:* Excessive taxonomy granularity causes artificial margin collapse on benign queries. Under the final 0.02 margin operating point, this case is safely auto-handled and is no longer an example of the final system's behavior; it is retained here to illustrate the calibration decision.
 
 ### Mode 2: Missing or Sparse Retrieval Evidence in Historical Corpus (13 cases)
 * **Mechanism:** The intent classifier is confident, but the retrieval corpus (8,000 cases) contains no historical precedent with dense cosine similarity >= 0.55.
@@ -221,10 +222,10 @@ Detailed breakdown of the primary failure modes with concrete conversation examp
   * *System Action:* Escalated due to `Classifier uncertainty` (`system_intent: uncertain`).
   * *Root Cause:* Benign conversational commentary and colloquial phrasing dilute cosine similarity against prototype vectors, safely triggering classifier abstention rather than forcing an inaccurate intent.
 
-### Mode 5: Length-Based Ambiguity Ceiling on Multi-Grievance Rants
-* **Mechanism:** Customers venting on Twitter often concatenate multiple grievances into a single long tweet. Attempting single-intent automation on multi-issue complaints produces incomplete, tone-deaf replies.
+### Mode 5: Conservative Length-Based Escalation
+* **Mechanism:** Long messages are treated conservatively because they have a higher risk of containing multiple issues or requiring broader contextual synthesis. Attempting single-intent automation on multi-aspect complaints produces incomplete replies.
 * **System Safeguard:** Deterministic rule escalating any message > 80 words (`looks_ambiguous`).
-* **Root Cause:** By design, multi-issue complaints require human holistic synthesis. This is a deliberate design trade-off prioritizing safety over coverage.
+* **Root Cause:** By design, long or multi-issue complaints require human holistic synthesis. This is a deliberate design trade-off prioritizing safety over coverage.
 
 ---
 
@@ -265,8 +266,8 @@ The underlying Twitter Customer Support dataset dates from late 2017. Certain hi
 
 If given one additional week to advance this project into production readiness:
 
-1. **Taxonomy Consolidation (104 to ~65 Macro Intents):**
-   * Sibling margin collapse accounts for 47% of false negative escalations. Merging near-duplicate intents (e.g., merging `prime_membership_query` and `prime_subscription_query`) would immediately unlock 10–14 safe auto-handles, raising coverage from 5.5% to ~11.5% with zero safety risk.
+1. **Consolidate Near-Duplicate Taxonomy Intents:**
+   * The final 104-intent taxonomy contains several semantically adjacent sibling intents, which contributes to low classifier margins and unnecessary abstention. A one-week experiment would test merging closely related pairs (for example, selected `prime_*` or `delivery_*` intents) and re-running the full 200-case evaluation. The goal would be to improve coverage while preserving the current zero-observed-unsafe-auto operating point; any coverage gain would need to be demonstrated experimentally rather than assumed.
 2. **Hard-Negative Prototype Calibration:**
    * Move from simple centroid averaging to contrastive metric learning (e.g., SetFit or supervised Triplet Loss) to sharpen classification boundaries between confusing intent pairs.
 3. **Single-Pass Structured Joint Guard & Generation:**
