@@ -25,7 +25,7 @@ To satisfy the assignment mandate—*"the proof is worth more than the system"*�
 
 #### Response Generation Quality (47-Case Conditional Auto-Handle Benchmark)
 
-| Quality Dimension (1–5) | Proposed System (RAG + Mistral Large) | Simple Baseline (BM25 Top-1 Historical Reply) | Improvement (Delta) |
+| Quality Dimension (1–5) | Proposed Agent (Hybrid Retrieval + Mistral Large) | Simple Baseline (BM25 Top-1 Reply) | Improvement (Delta) |
 | :--- | :---: | :---: | :---: |
 | **Overall Quality** | **4.72 / 5.00** | 2.38 / 5.00 | **+2.34** |
 | **Correctness** | **4.87 / 5.00** | 2.38 / 5.00 | **+2.49** |
@@ -152,7 +152,7 @@ To prove the core assignment requirement that the system classifies, grounds rep
 ### 4.3 Response Quality: LLM-as-a-Judge Evaluation
 Using an automated judge with Mistral Large (temperature = 0.0) across the 47 audited gold auto_handle benchmark cases evaluated on a 1–5 Likert rubric:
 
-| Rubric Dimension | Proposed System | BM25 Top-1 Baseline | Delta |
+| Rubric Dimension | Proposed Agent (Hybrid Retrieval + Mistral Large) | Simple Baseline (BM25 Top-1 Reply) | Delta |
 | :--- | :---: | :---: | :---: |
 | **Correctness** | **4.87** | 2.38 | +2.49 |
 | **Groundedness** | **4.45** | 2.40 | +2.05 |
