@@ -218,8 +218,6 @@ hiver-sde-intern/
 ├── run_full_rebuild.sh                      # Full from-scratch rebuild script
 ├── artifacts/
 │   └── final_run_manifest.json              # Run parameters, seeds, models, taxonomy hash
-├── experiments/
-│   └── intent_discovery.md                  # Discovery diagnostics / experimental notes
 ├── data/
 │   └── processed/
 │       ├── classifier/                      # 104 prototype centroids & intent metadata
